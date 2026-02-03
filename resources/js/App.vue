@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import Header from './components/Header.vue';
 import Footer from './components/Footer.vue';
 import Carousel from './components/Carousel.vue';
@@ -17,6 +17,26 @@ const latestNews = ref([
     { id: 8, title: 'Megadeth revela capa polêmica', excerpt: 'Arte criada por IA gera debate nas redes sociais.', image: 'https://static.wixstatic.com/media/fe6907_cfbf2801fd96414db3babbbfd8795fcd~mv2.jpg/v1/fill/w_925,h_520,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/fe6907_cfbf2801fd96414db3babbbfd8795fcd~mv2.jpg', category: 'Thrash', date: '24 Jan', author: 'Vic' },
     { id: 9, title: 'Angra grava DVD em caverna', excerpt: 'Show exclusivo para 500 fãs na Gruta de Maquiné.', image: 'https://s2-g1.glbimg.com/Zv7ePWezUzCQh3alI8P4DgF2lEY=/0x0:1920x1281/1008x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2025/I/r/GyVlKSTlWLlLUASYfrPw/angra-2023-henrique-grandi-35.jpg', category: 'Power', date: '23 Jan', author: 'Rafael' }
 ]);
+
+const newsList = ref([]);
+const isLoading = ref(true);
+
+const fetchNews = async () => {
+    try {
+        const response = await fetch('/api/news');
+        const data = await response.json();
+        newsList.value = data;
+        console.log('Notícias carregadas:', data);
+    } catch (error) {
+        console.error('Erro ao carregar notícias:', error);
+    } finally {
+        isLoading.value = false;
+    }
+};
+
+onMounted(() => {
+    fetchNews();
+});
 </script>
 
 <template>
@@ -28,7 +48,7 @@ const latestNews = ref([
                 <div class="news-section">
                     <h2 class="section-title">Últimas Notícias</h2>
                     <div class="cards-grid">
-                        <NewsCard v-for="post in latestNews" :key="post.id" :post="post" />
+                        <NewsCard v-for="post in newsList" :key="post.id" :post="post" />
                     </div>
                 </div>
                 <aside class="sidebar-section">

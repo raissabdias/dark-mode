@@ -5,12 +5,12 @@ defineProps({ post: Object });
 <template>
     <div class="news-card">
         <div class="image-wrapper">
-            <img :src="post.image" :alt="post.title" />
+            <img :src="post.image_url" :alt="post.title" />
             <span class="category-badge">{{ post.category }}</span>
         </div>
         <div class="content">
             <div class="meta">
-                <span>{{ post.date }}</span>
+                <span>{{ post.date_formatted }}</span>
                 <span>•</span>
                 <span class="author">{{ post.author }}</span>
             </div>

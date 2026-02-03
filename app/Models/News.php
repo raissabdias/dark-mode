@@ -25,4 +25,16 @@ class News extends Model
         'published_at' => 'datetime',
         'is_active' => 'boolean',
     ];
+
+    protected $appends = ['image_url', 'date_formatted'];
+
+    public function getImageUrlAttribute()
+    {
+        return $this->image ? url("storage/{$this->image}") : null;
+    }
+
+    public function getDateFormattedAttribute()
+    {
+        return $this->published_at ? $this->published_at->format('d/m/y') : null;
+    }
 }
