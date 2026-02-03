@@ -18,12 +18,14 @@ class News extends Model
         'content',
         'image',
         'published_at',
-        'is_active'
+        'is_active', 
+        'is_featured'
     ];
 
     protected $casts = [
         'published_at' => 'datetime',
         'is_active' => 'boolean',
+        'is_featured' => 'boolean',
     ];
 
     protected $appends = ['image_url', 'date_formatted'];

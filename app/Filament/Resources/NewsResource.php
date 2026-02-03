@@ -86,7 +86,12 @@ class NewsResource extends Resource
                         Forms\Components\Toggle::make('is_active')
                             ->label('Ativo?')
                             ->default(true),
+                        Forms\Components\Toggle::make('is_featured')
+                                ->label('Destaque no Carrossel?')
+                                ->onColor('warning')
+                                ->default(false),
                     ])->columns(1),
+                    
             ]);
     }
 
@@ -115,6 +120,13 @@ class NewsResource extends Resource
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Ativo')
                     ->boolean(),
+
+                Tables\Columns\IconColumn::make('is_featured')
+                    ->label('Carrossel')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-star') // Ícone de estrelinha
+                    ->falseIcon('heroicon-o-minus')
+                    ->color(fn (string $state): string => $state ? 'warning' : 'gray'),
             ])
             ->filters([
                 //

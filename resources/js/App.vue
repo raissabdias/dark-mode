@@ -95,7 +95,7 @@ onMounted(() => {
 }
 
 .section-title {
-    font-family: 'Grenze Gotisch', cursive;
+    font-family: 'Michroma', sans-serif;
     font-size: 1.8rem;
     color: white;
     margin-bottom: 20px;

@@ -85,7 +85,7 @@ const ads = ref([
 }
 
 .sidebar-title {
-    font-family: 'Grenze Gotisch', cursive;
+    font-family: 'Michroma', cursive;
     font-size: 1.5rem;
     color: white;
     border-bottom: 1px solid #333;

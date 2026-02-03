@@ -1,55 +1,62 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, computed } from "vue";
 import Carousel from 'primevue/carousel';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
 
-const highlights = ref([
-    {
-        id: 1,
-        title: 'Iron Maiden anuncia nova turnê mundial',
-        category: 'Heavy Metal',
-        excerpt: 'A lendária banda britânica passará por 15 países em 2026 com a turnê "Eternity".',
-        image: 'https://igormiranda.com.br/wp-content/cache/seraphinite-accelerator/s/m/d/img/667c973d9f5a63ef63bdec5d423139ef.11934.jpeg'
-    },
-    {
-        id: 2,
-        title: 'O Retorno do Gótico nos festivais europeus',
-        category: 'Gótico',
-        excerpt: 'Bandas clássicas dos anos 80 voltam aos palcos principais do verão europeu.',
-        image: 'https://cvltnation.com/wp-content/uploads/2021/03/3524_120170744833606_1279563416_n-1.jpeg'
-    },
-    {
-        id: 3,
-        title: 'Sepultura: Documentário inédito será lançado',
-        category: 'Thrash Metal',
-        excerpt: 'Imagens de arquivo nunca vistas mostram os bastidores do álbum Roots.',
-        image: 'https://s2.glbimg.com/fsrSZ2i6y-DheMdmHs7s0sDDVTk=/620x465/s.glbimg.com/jo/g1/f/original/2016/04/20/mxxx0427.jpg'
-    }
-]);
+const highlights = ref([]);
 
 const responsiveOptions = ref([
     { breakpoint: '1024px', numVisible: 1, numScroll: 1 },
     { breakpoint: '768px', numVisible: 1, numScroll: 1 },
     { breakpoint: '560px', numVisible: 1, numScroll: 1 }
 ]);
+
+// Verifica se existe apenas 1 notícia para travar o carrossel
+const isSingleItem = computed(() => highlights.value.length === 1);
+
+const fetchFeatured = async () => {
+    try {
+        // DICA: Se quiser mostrar mais no carrossel, aumente o ->take(X) lá no routes/api.php
+        const response = await fetch('/api/news/featured');
+        highlights.value = await response.json();
+    } catch (error) {
+        console.error('Erro ao carregar destaques:', error);
+    }
+};
+
+onMounted(() => {
+    fetchFeatured();
+});
 </script>
 
 <template>
-    <div class="carousel-wrapper">
-        <Carousel :value="highlights" :numVisible="1" :numScroll="1" :responsiveOptions="responsiveOptions" circular
-            autoplayInterval="5000" :showIndicators="true">
+    <div v-if="highlights.length > 0" class="carousel-wrapper">
+        <Carousel :value="highlights" :numVisible="1" :numScroll="1" :responsiveOptions="responsiveOptions"
+            :circular="!isSingleItem" :autoplayInterval="isSingleItem ? 0 : 5000" :showIndicators="!isSingleItem" :pt="{
+                previousButton: { class: isSingleItem ? '!hidden' : '' },
+                nextButton: { class: isSingleItem ? '!hidden' : '' }
+            }">
             <template #item="slotProps">
-                <div class="hero-slide h-[300px] md:h-[500px]">
-                    <img :src="slotProps.data.image" :alt="slotProps.data.title" class="hero-image" />
+                <div class="hero-slide h-[450px] md:h-[700px]">
+                    <img :src="slotProps.data.image_url" :alt="slotProps.data.title" class="hero-image" />
                     <div class="overlay"></div>
-                    <div class="hero-content p-6 md:p-12">
-                        <Tag :value="slotProps.data.category" severity="secondary" class="mb-2 md:mb-3 category-tag" />
-                        <h1 class="text-2xl md:text-4xl font-bold mb-2 leading-tight">{{ slotProps.data.title }}</h1>
-                        <p class="mb-4 text-sm md:text-xl text-gray-300 hidden sm:block">{{ slotProps.data.excerpt }}
+                    <div class="hero-content p-8 md:p-16">
+                        <Tag :value="slotProps.data.category" severity="secondary" class="mb-3 md:mb-4 category-tag" />
+
+                        <h1 class="text-3xl md:text-4xl font-black mb-4 leading-tight title-shadow">
+                            {{ slotProps.data.title }}
+                        </h1>
+                        <div
+                            class="text-sm text-gray-300 mb-3 font-bold uppercase tracking-wider flex items-center gap-2">
+                            <i class="pi pi-calendar text-purple-400"></i> {{ slotProps.data.date_formatted }}
+                        </div>
+                        <p
+                            class="mb-6 text-base md:text-1xl text-gray-200 hidden sm:block max-w-3xl leading-relaxed title-shadow-sm">
+                            {{ slotProps.data.excerpt }}
                         </p>
-                        <Button label="Ler Matéria" icon="pi pi-bolt" size="small"
-                            class="p-button-rounded p-button-help mt-2" />
+                        <Button label="Ler Matéria" icon="pi pi-arrow-right" iconPos="right"
+                            class="p-button-rounded p-button-help font-bold px-6 py-3" />
                     </div>
                 </div>
             </template>
@@ -59,7 +66,7 @@ const responsiveOptions = ref([
 
 <style scoped>
 .carousel-wrapper {
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
     border-bottom: 2px solid #333;
 }
 
@@ -67,9 +74,8 @@ const responsiveOptions = ref([
     position: relative;
     display: flex;
     align-items: flex-end;
-    border-radius: 8px;
-    /* Borda mais suave */
     overflow: hidden;
+    border-radius: 20px;
 }
 
 .hero-image {
@@ -80,6 +86,11 @@ const responsiveOptions = ref([
     top: 0;
     left: 0;
     z-index: 1;
+    transition: transform 1s ease-in-out;
+}
+
+.hero-slide:hover .hero-image {
+    transform: scale(1.05);
 }
 
 .overlay {
@@ -88,7 +99,7 @@ const responsiveOptions = ref([
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 10%, rgba(0, 0, 0, 0.4) 60%, transparent 100%);
+    background: linear-gradient(to top, rgba(0, 0, 0, .85) 15%, rgba(0, 0, 0, 0.5) 30%, transparent 100%);
     z-index: 2;
 }
 
@@ -96,8 +107,15 @@ const responsiveOptions = ref([
     position: relative;
     z-index: 3;
     width: 100%;
-    max-width: 800px;
     color: white;
+}
+
+.title-shadow {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+}
+
+.title-shadow-sm {
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 .category-tag {
@@ -105,6 +123,8 @@ const responsiveOptions = ref([
     color: white !important;
     font-weight: bold;
     text-transform: uppercase;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
 }
 </style>
