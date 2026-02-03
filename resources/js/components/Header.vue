@@ -2,40 +2,74 @@
 import { ref } from "vue";
 import Menubar from 'primevue/menubar';
 
-// Removi o import do InputText pois não vamos mais usar
-
 const items = ref([
     { label: 'Home', icon: 'pi pi-home', route: '/' },
     { label: 'Notícias', icon: 'pi pi-megaphone', route: '/news' },
     { label: 'Reviews', icon: 'pi pi-star', route: '/reviews' },
-    { label: 'Agenda', icon: 'pi pi-calendar', route: '/agenda' }
+    { label: 'Agenda', icon: 'pi pi-calendar', route: '/agenda' },
+    { key: 'social-mobile', class: 'lg:hidden' }
 ]);
 </script>
 
 <template>
-    <div class="header-wrapper">
-        <Menubar :model="items" class="custom-menubar">
+    <div class="sticky top-0 z-[1000] w-full">
+        <Menubar :model="items"
+            class="w-full bg-black/95 backdrop-blur-md border-b border-white/10 rounded-none px-4 py-3 lg:px-8 flex items-center justify-between"
+            :pt="{ 
+                // Garante que a borda preta seja aplicada na raiz do componente
+                root: { class: '!border-b-2 !border-black !rounded-none' },
+                
+                // Botão hamburguer no canto direito
+                button: { class: 'ml-auto order-3 text-gray-200 hover:bg-white/10 focus:ring-0 w-10 h-10 flex items-center justify-center rounded-lg transition-all' },
+                
+                // Menu dropdown (Mobile): Borda preta também na separação interna
+                rootList: { class: '!bg-black/95 !border-t-2 !border-black lg:!bg-transparent lg:!border-none w-full lg:w-auto top-full left-0 absolute lg:static shadow-xl lg:shadow-none' },
+                
+                // Itens individuais
+                itemContent: { class: 'text-gray-200 hover:text-white' },
+                itemLink: { class: 'py-3 px-4 lg:py-2 lg:px-3' }
+            }">
             <template #start>
-                <a href="/" class="flex items-center gap-2 mr-8">
+                <a href="/" class="flex items-center gap-2 mr-4 lg:mr-8 shrink-0 order-1">
                     <img src="/images/logo.png" alt="DarkMode Logo"
-                        class="h-10 w-auto object-contain hover:opacity-80 transition-opacity" />
+                        class="h-8 md:h-9 w-auto object-contain hover:opacity-80 transition-opacity" />
                 </a>
             </template>
-            
+            <template #item="{ item, props }">
+                <div v-if="item.key === 'social-mobile'"
+                    class="flex items-center justify-center gap-6 py-6 border-t border-white/10 mt-2 bg-black/50">
+                    <a href="#"
+                        class="text-gray-400 text-2xl hover:text-purple-500 hover:scale-110 transition-transform"><i
+                            class="pi pi-instagram"></i></a>
+                    <a href="#"
+                        class="text-gray-400 text-2xl hover:text-purple-500 hover:scale-110 transition-transform"><i
+                            class="pi pi-twitter"></i></a>
+                    <a href="#"
+                        class="text-gray-400 text-2xl hover:text-purple-500 hover:scale-110 transition-transform"><i
+                            class="pi pi-youtube"></i></a>
+                    <a href="#"
+                        class="text-gray-400 text-2xl hover:text-purple-500 hover:scale-110 transition-transform"><i
+                            class="pi pi-facebook"></i></a>
+                </div>
+                <a v-else :href="item.route" v-bind="props.action" class="flex items-center group w-full">
+                    <span :class="[item.icon, 'text-gray-400 group-hover:text-purple-400 transition-colors mr-3']" />
+                    <span class="tracking-wide group-hover:text-white transition-colors">{{ item.label }}</span>
+                </a>
+            </template>
             <template #end>
-                <div class="social-group">
-                    <a href="https://instagram.com" target="_blank" class="icon-link">
-                        <i class="pi pi-instagram"></i>
-                    </a>
-                    <a href="https://twitter.com" target="_blank" class="icon-link">
-                        <i class="pi pi-twitter"></i>
-                    </a>
-                    <a href="https://youtube.com" target="_blank" class="icon-link">
-                        <i class="pi pi-youtube"></i>
-                    </a>
-                    <a href="https://facebook.com" target="_blank" class="icon-link">
-                        <i class="pi pi-facebook"></i>
-                    </a>
+                <div class="hidden lg:flex items-center gap-5 order-2">
+                    <a href="#"
+                        class="text-gray-400 text-lg hover:text-purple-500 hover:-translate-y-1 transition-all"><i
+                            class="pi pi-instagram"></i></a>
+                    <a href="#"
+                        class="text-gray-400 text-lg hover:text-purple-500 hover:-translate-y-1 transition-all"><i
+                            class="pi pi-twitter"></i></a>
+                    <a href="#"
+                        class="text-gray-400 text-lg hover:text-purple-500 hover:-translate-y-1 transition-all"><i
+                            class="pi pi-youtube"></i></a>
+                    <a href="#"
+                        class="text-gray-400 text-lg hover:text-purple-500 hover:-translate-y-1 transition-all"><i
+                            class="pi pi-facebook"></i></a>
                 </div>
             </template>
         </Menubar>
@@ -43,81 +77,7 @@ const items = ref([
 </template>
 
 <style scoped>
-.header-wrapper {
-    margin-bottom: 2rem;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-:deep(.p-menubar) {
-    background-color: rgba(10, 10, 10, 0.95) !important;
-    border: none !important;
-    border-bottom: 1px solid #333 !important;
-    border-radius: 0 !important;
-    padding: 1rem 2rem;
-}
-
-:deep(.p-menuitem-text),
-:deep(.p-menuitem-icon) {
-    color: #e2e8f0 !important;
-}
-
-:deep(.p-menuitem-link:hover .p-menuitem-text),
-:deep(.p-menuitem-link:hover .p-menuitem-icon) {
-    color: #a855f7 !important;
-}
-
-/* --- Estilo dos Ícones Sociais --- */
-.icon-link {
-    color: #cccccc;
-    /* Cinza claro padrão */
-    text-decoration: none;
-    font-size: 1.3rem;
-    /* Tamanho do ícone */
-    transition: all 0.3s ease;
-    /* Animação suave */
-    display: flex;
-    align-items: center;
-}
-
 .icon-link:hover {
-    color: #a855f7;
-    /* Roxo Neon ao passar o mouse */
-    transform: translateY(-2px);
-    /* Pulo sutil para cima */
-    text-shadow: 0 0 8px rgba(168, 85, 247, 0.6);
-    /* Brilho neon */
-}
-
-/* Logo */
-.logo-text {
-    font-family: 'Grenze Gotisch', cursive;
-    letter-spacing: 2px;
-}
-
-.social-group {
-    display: flex;
-    align-items: center;
-    gap: 25px;
-    /* <--- AQUI É O CONTROLE DA DISTÂNCIA. Aumente se quiser mais. */
-}
-
-/* --- Estilo dos Ícones Sociais (Mantido e Refinado) --- */
-.icon-link {
-    color: #cccccc;
-    text-decoration: none;
-    font-size: 1.4rem;
-    /* Aumentei um pouquinho o ícone também */
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.icon-link:hover {
-    color: #a855f7;
-    transform: translateY(-3px);
-    text-shadow: 0 0 10px rgba(168, 85, 247, 0.8);
+    text-shadow: 0 0 12px rgba(168, 85, 247, 0.5);
 }
 </style>

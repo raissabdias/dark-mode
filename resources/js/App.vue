@@ -22,27 +22,20 @@ const latestNews = ref([
 <template>
     <div class="layout-wrapper">
         <Header />
-
         <main class="main-container">
             <Carousel />
-
             <div class="main-grid">
-
                 <div class="news-section">
                     <h2 class="section-title">Últimas Notícias</h2>
-
                     <div class="cards-grid">
                         <NewsCard v-for="post in latestNews" :key="post.id" :post="post" />
                     </div>
                 </div>
-
                 <aside class="sidebar-section">
                     <Sidebar />
                 </aside>
-
             </div>
         </main>
-
         <Footer />
     </div>
 </template>
@@ -59,34 +52,41 @@ const latestNews = ref([
     width: 100%;
     max-width: 1400px;
     margin: 0 auto;
-    padding: 40px 20px;
+    padding: 20px 16px;
+}
+
+@media (min-width: 768px) {
+    .main-container {
+        padding: 40px 24px;
+    }
 }
 
 .main-grid {
     display: grid;
     grid-template-columns: 1fr 320px;
     gap: 40px;
-    margin-top: 40px;
+    margin-top: 20px;
 }
 
 .cards-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
+    gap: 20px;
 }
 
 .section-title {
     font-family: 'Grenze Gotisch', cursive;
-    font-size: 2rem;
+    font-size: 1.8rem;
     color: white;
-    margin-bottom: 25px;
-    border-left: 5px solid #a855f7;
-    padding-left: 15px;
+    margin-bottom: 20px;
+    border-left: 4px solid #a855f7;
+    padding-left: 12px;
 }
 
 @media (max-width: 1024px) {
     .main-grid {
         grid-template-columns: 1fr;
+        gap: 30px;
     }
 
     .cards-grid {
@@ -97,6 +97,10 @@ const latestNews = ref([
 @media (max-width: 600px) {
     .cards-grid {
         grid-template-columns: 1fr;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
     }
 }
 </style>

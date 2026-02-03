@@ -4,7 +4,6 @@ import Carousel from 'primevue/carousel';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
 
-// Dados Fakes (Mock) com tema Rock/Metal
 const highlights = ref([
     {
         id: 1,
@@ -29,7 +28,6 @@ const highlights = ref([
     }
 ]);
 
-// Configuração de responsividade do carrossel
 const responsiveOptions = ref([
     { breakpoint: '1024px', numVisible: 1, numScroll: 1 },
     { breakpoint: '768px', numVisible: 1, numScroll: 1 },
@@ -39,26 +37,19 @@ const responsiveOptions = ref([
 
 <template>
     <div class="carousel-wrapper">
-        <Carousel 
-            :value="highlights" 
-            :numVisible="1" 
-            :numScroll="1" 
-            :responsiveOptions="responsiveOptions" 
-            circular
-            autoplayInterval="5000"
-            :showIndicators="true"
-        >
+        <Carousel :value="highlights" :numVisible="1" :numScroll="1" :responsiveOptions="responsiveOptions" circular
+            autoplayInterval="5000" :showIndicators="true">
             <template #item="slotProps">
-                <div class="hero-slide">
+                <div class="hero-slide h-[300px] md:h-[500px]">
                     <img :src="slotProps.data.image" :alt="slotProps.data.title" class="hero-image" />
-                    
                     <div class="overlay"></div>
-
-                    <div class="hero-content">
-                        <Tag :value="slotProps.data.category" severity="secondary" class="mb-3 category-tag" />
-                        <h1 class="text-4xl font-bold mb-2">{{ slotProps.data.title }}</h1>
-                        <p class="mb-4 text-xl text-gray-300">{{ slotProps.data.excerpt }}</p>
-                        <Button label="Ler Matéria" icon="pi pi-bolt" class="p-button-rounded p-button-help" />
+                    <div class="hero-content p-6 md:p-12">
+                        <Tag :value="slotProps.data.category" severity="secondary" class="mb-2 md:mb-3 category-tag" />
+                        <h1 class="text-2xl md:text-4xl font-bold mb-2 leading-tight">{{ slotProps.data.title }}</h1>
+                        <p class="mb-4 text-sm md:text-xl text-gray-300 hidden sm:block">{{ slotProps.data.excerpt }}
+                        </p>
+                        <Button label="Ler Matéria" icon="pi pi-bolt" size="small"
+                            class="p-button-rounded p-button-help mt-2" />
                     </div>
                 </div>
             </template>
@@ -68,16 +59,16 @@ const responsiveOptions = ref([
 
 <style scoped>
 .carousel-wrapper {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
     border-bottom: 2px solid #333;
 }
 
 .hero-slide {
     position: relative;
-    height: 500px; /* Altura do Banner */
     display: flex;
-    align-items: flex-end; /* Texto no rodapé da imagem */
-    border-radius: 12px;
+    align-items: flex-end;
+    border-radius: 8px;
+    /* Borda mais suave */
     overflow: hidden;
 }
 
@@ -91,30 +82,29 @@ const responsiveOptions = ref([
     z-index: 1;
 }
 
-/* O gradiente escuro que permite ler o texto sobre a imagem */
 .overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to top, rgba(0,0,0,0.95) 10%, rgba(0,0,0,0.3) 60%, transparent 100%);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 10%, rgba(0, 0, 0, 0.4) 60%, transparent 100%);
     z-index: 2;
 }
 
 .hero-content {
     position: relative;
     z-index: 3;
-    padding: 3rem;
     width: 100%;
     max-width: 800px;
     color: white;
 }
 
 .category-tag {
-    background-color: #a855f7 !important; /* Roxo */
+    background-color: #a855f7 !important;
     color: white !important;
     font-weight: bold;
     text-transform: uppercase;
+    font-size: 0.7rem;
 }
 </style>

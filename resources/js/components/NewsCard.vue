@@ -8,18 +8,14 @@ defineProps({ post: Object });
             <img :src="post.image" :alt="post.title" />
             <span class="category-badge">{{ post.category }}</span>
         </div>
-
         <div class="content">
             <div class="meta">
                 <span>{{ post.date }}</span>
                 <span>•</span>
                 <span class="author">{{ post.author }}</span>
             </div>
-
             <h3 class="title">{{ post.title }}</h3>
-            
             <p class="excerpt">{{ post.excerpt }}</p>
-
             <a href="#" class="read-more">Ler Matéria <i class="pi pi-arrow-right ml-1"></i></a>
         </div>
     </div>
