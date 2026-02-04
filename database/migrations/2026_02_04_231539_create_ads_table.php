@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('ads', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->string('image');
+            $table->string('link');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

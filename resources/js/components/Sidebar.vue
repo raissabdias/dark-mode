@@ -3,20 +3,7 @@ import { ref, onMounted } from 'vue';
 import Button from 'primevue/button';
 
 const nextGigs = ref([]);
-const ads = ref([
-    {
-        id: 1,
-        title: 'Guitar Shop',
-        image: 'https://placehold.co/300x150/111/333?text=LOJA+DE+GUITARRAS',
-        link: 'https://google.com'
-    },
-    {
-        id: 2,
-        title: 'Hellfest 2026',
-        image: 'https://agendametal.com.br/wp-content/uploads/2025/08/hellfest-2026-1.jpg',
-        link: 'https://google.com'
-    }
-]);
+const ads = ref([]);
 
 const formatDateStyle = (dateString) => {
     const date = new Date(dateString);
@@ -41,8 +28,25 @@ const fetchEvents = async () => {
     }
 };
 
+const fetchAds = async () => {
+    try {
+        const response = await fetch('/api/ads');
+        const data = await response.json();
+        
+        ads.value = data.map(ad => ({
+            id: ad.id,
+            title: ad.title,
+            image: ad.image_url,
+            link: ad.link
+        }));
+    } catch (error) {
+        console.error('Erro ao buscar anúncios:', error);
+    }
+};
+
 onMounted(() => {
     fetchEvents();
+    fetchAds();
 });
 </script>
 
