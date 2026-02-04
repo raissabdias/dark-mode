@@ -1,17 +1,8 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import Button from 'primevue/button';
 
-const nextGigs = ref([
-    { id: 1, band: 'GHOST', date: '21 SET', loc: 'Allianz Parque', img: 'https://newnoisemagazine.com/wp-content/uploads/2025/03/Papa_V.webp' },
-    { id: 2, band: 'LACUNA COIL', date: '10 OUT', loc: 'Carioca Club', img: 'https://whiplash.net/imagens_promo_22/cristina_sccabia_facebook_por_cunene.jpg' },
-    { id: 3, band: 'IRON MAIDEN', date: '06 DEZ', loc: 'Morumbi', img: 'https://placehold.co/100x100/222/red?text=I' },
-    { id: 4, band: 'MEGADETH', date: '15 JAN', loc: 'Espaço Unimed', img: 'https://placehold.co/100x100/333/orange?text=M' },
-    { id: 5, band: 'SHE PAST AWAY', date: '11 JAN', loc: 'Espaço Unimed', img: 'https://placehold.co/100x100/333/orange?text=S' },
-    { id: 6, band: 'TWIN TRIBES', date: '21 JUL', loc: 'Espaço Unimed', img: 'https://placehold.co/100x100/333/orange?text=T' },
-    { id: 7, band: 'VERLOREN', date: '28 JUN', loc: 'Espaço Unimed', img: 'https://placehold.co/100x100/333/orange?text=V' },
-    { id: 8, band: 'GENESIS', date: '01 DEZ', loc: 'Espaço Unimed', img: 'https://placehold.co/100x100/333/orange?text=G' }
-]);
+const nextGigs = ref([]);
 const ads = ref([
     {
         id: 1,
@@ -26,6 +17,33 @@ const ads = ref([
         link: 'https://google.com'
     }
 ]);
+
+const formatDateStyle = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = date.toLocaleString('pt-BR', { month: 'short' }).toUpperCase().replace('.', '');
+    return `${day} ${month}`;
+};
+
+const fetchEvents = async () => {
+    try {
+        const response = await fetch('/api/events');
+        const data = await response.json();
+        nextGigs.value = data.map(event => ({
+            id: event.id,
+            band: event.title, 
+            loc: event.location,
+            img: event.image_url,
+            date: formatDateStyle(event.event_date)
+        }));
+    } catch (error) {
+        console.error('Erro ao buscar agenda:', error);
+    }
+};
+
+onMounted(() => {
+    fetchEvents();
+});
 </script>
 
 <template>

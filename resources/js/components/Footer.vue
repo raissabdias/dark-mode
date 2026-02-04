@@ -16,7 +16,7 @@ const currentYear = new Date().getFullYear();
                         <span>Developed by</span>
                         <a href="https://www.linkedin.com/in/raissabdias/" target="_blank"
                             class="group flex items-center gap-2 text-purple-500 font-bold hover:text-purple-400 transition-colors bg-white/5 px-3 py-1 rounded-full border border-purple-500/20 hover:border-purple-500/50">
-                            Raissa
+                            Raíssa Dias
                             <i class="pi pi-linkedin text-lg group-hover:scale-110 transition-transform"></i>
                         </a>
                     </div>
