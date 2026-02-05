@@ -1,48 +1,63 @@
-# Usa a imagem oficial do PHP 8.2 com Apache
+# Usa PHP 8.2
 FROM php:8.2-apache
 
-# 1. Instalar dependências do sistema e extensões do PHP necessárias para o Laravel
+# 1. Instala dependências do sistema
+# Adicionamos bibliotecas gráficas (libjpeg, libfreetype) essenciais para o Filament manipular imagens
 RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    libicu-dev \
-    libzip-dev \
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
     zip \
     unzip \
-    git \
+    libpq-dev \
+    libzip-dev \
+    libicu-dev \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
     nodejs \
-    npm \
-    && docker-php-ext-install pdo pdo_pgsql bcmath intl opcache zip
+    npm
 
-# 2. Configurar o Apache para apontar para a pasta /public (Padrão Laravel)
-# Usamos 'sed' para editar o arquivo de configuração padrão do Apache direto na imagem
-ENV APACHE_DOCUMENT_ROOT /var/www/html/public
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
+# 2. Limpa cache do apt
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# 3. Habilitar o mod_rewrite do Apache (essencial para rotas do Laravel)
-RUN a2enmod rewrite
+# 3. Configura e Instala extensões do PHP
+# O passo crucial: Configurar o GD para aceitar JPEG e FreeType
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+RUN docker-php-ext-install pdo_pgsql mbstring exif pcntl bcmath gd zip intl opcache
 
-# 4. Instalar o Composer (Gerenciador de pacotes PHP)
+# 4. Instala o Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# 5. Definir o diretório de trabalho
+# 5. Define diretório
 WORKDIR /var/www/html
 
-# 6. Copiar os arquivos do projeto para dentro do container
-COPY . .
+# 6. Copia arquivos
+COPY . /var/www/html
 
-# 7. Rodar instalações (Backend e Frontend)
-# --no-scripts evita erros antes do autoload estar pronto
-RUN composer install --no-dev --optimize-autoloader --no-scripts
+# 7. Composer Install (Com flag para ignorar requisitos de plataforma se houver conflito menor)
+RUN composer install --no-dev --optimize-autoloader --no-scripts --ignore-platform-reqs
+
+# 8. Frontend Build
 RUN npm install && npm run build
 
-# 8. Ajustar permissões (O Apache precisa escrever nessas pastas)
+# 9. Permissões
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# 9. Comando que roda quando o container inicia
-# Roda as migrations, cache e inicia o servidor Apache
-CMD bash -c "php artisan migrate --force && php artisan config:cache && php artisan route:cache && php artisan view:cache && apache2-foreground"
+# 10. Configuração do Apache
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
+RUN a2enmod rewrite
 
-# Expõe a porta 80
+# 11. Expor Porta
 EXPOSE 80
+
+# 12. Comando Final
+CMD php artisan migrate --force && \
+    php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan view:cache && \
+    apache2-foreground
