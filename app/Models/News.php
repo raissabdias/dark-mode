@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class News extends Model
 {
@@ -32,7 +33,7 @@ class News extends Model
 
     public function getImageUrlAttribute()
     {
-        return $this->image ? url("storage/{$this->image}") : null;
+        return $this->image ? Storage::disk('supabase')->url($this->image) : null;
     }
 
     public function getDateFormattedAttribute()

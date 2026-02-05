@@ -51,7 +51,7 @@ class EventResource extends Resource
                             ->imageResizeTargetWidth('200')
                             ->imageResizeTargetHeight('200')
                             ->imageResizeUpscale(false)
-                            ->disk('public') // Importante!
+                            ->disk('supabase')
                             ->directory('events-images')
                             ->visibility('public')
                             ->required(),

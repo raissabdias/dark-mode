@@ -75,7 +75,7 @@ class NewsResource extends Resource
                         Forms\Components\FileUpload::make('image')
                             ->label('Imagem de Capa')
                             ->image()
-                            ->disk('public')
+                            ->disk('supabase')
                             ->directory('news-images')
                             ->visibility('public'),
 

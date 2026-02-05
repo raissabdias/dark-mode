@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Ad extends Model
 {
@@ -23,6 +24,6 @@ class Ad extends Model
 
     public function getImageUrlAttribute()
     {
-        return $this->image ? url("storage/{$this->image}") : null;
+        return $this->image ? Storage::disk('supabase')->url($this->image) : null;
     }
 }

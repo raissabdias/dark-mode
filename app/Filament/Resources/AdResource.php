@@ -50,7 +50,7 @@ class AdResource extends Resource
                             ->imageResizeMode('cover')
                             ->imageResizeTargetWidth('300')
                             ->imageResizeTargetHeight('150')
-                            ->disk('public')
+                            ->disk('supabase')
                             ->directory('ads-images')
                             ->visibility('public')
                             ->required(),
