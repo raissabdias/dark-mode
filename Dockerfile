@@ -1,60 +1,48 @@
-# 1. Usar a imagem oficial do PHP 8.4
-FROM php:8.4-apache
+# Usa a imagem oficial do PHP 8.2 com Apache
+FROM php:8.2-apache
 
-# 2. Instalar dependências do sistema
+# 1. Instalar dependências do sistema e extensões do PHP necessárias para o Laravel
 RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
     libpq-dev \
+    libicu-dev \
+    libzip-dev \
     zip \
     unzip \
     git \
-    curl
+    nodejs \
+    npm \
+    && docker-php-ext-install pdo pdo_pgsql bcmath intl opcache zip
 
-# 3. Instalar Node.js (Versão 20)
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
-RUN apt-get install -y nodejs
+# 2. Configurar o Apache para apontar para a pasta /public (Padrão Laravel)
+# Usamos 'sed' para editar o arquivo de configuração padrão do Apache direto na imagem
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 
-# 4. Limpar cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# 5. Instalar extensões do PHP
-RUN docker-php-ext-install pdo_pgsql mbstring exif pcntl bcmath gd
-
-# 6. Habilitar mod_rewrite
+# 3. Habilitar o mod_rewrite do Apache (essencial para rotas do Laravel)
 RUN a2enmod rewrite
 
-# 7. Configurar pasta
+# 4. Instalar o Composer (Gerenciador de pacotes PHP)
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# 5. Definir o diretório de trabalho
 WORKDIR /var/www/html
 
-# 8. Copiar arquivos do projeto
-COPY . /var/www/html
+# 6. Copiar os arquivos do projeto para dentro do container
+COPY . .
 
-# 9. Instalar Composer e dependências
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+# 7. Rodar instalações (Backend e Frontend)
+# --no-scripts evita erros antes do autoload estar pronto
+RUN composer install --no-dev --optimize-autoloader --no-scripts
+RUN npm install && npm run build
 
-# 10. Frontend Build
-RUN npm install
-RUN npm run build
-
-# 11. Permissões
+# 8. Ajustar permissões (O Apache precisa escrever nessas pastas)
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# 12. Copia o seu arquivo 000-default.conf para dentro do Apache
-COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
+# 9. Comando que roda quando o container inicia
+# Roda as migrations, cache e inicia o servidor Apache
+CMD bash -c "php artisan migrate --force && php artisan config:cache && php artisan route:cache && php artisan view:cache && apache2-foreground"
 
-# 13. Garante que o Apache 'leia' essa variável de ambiente corretamente
-ENV APACHE_DOCUMENT_ROOT /var/www/html/public
-
-# 14. Expor porta
+# Expõe a porta 80
 EXPOSE 80
-
-# 15. Iniciar o Apache e rodar comandos do Laravel
-CMD php artisan optimize:clear && \
-    php artisan config:clear && \
-    php artisan route:clear && \
-    php artisan view:clear && \
-    php artisan migrate --force && \
-    apache2-foreground
