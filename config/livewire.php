@@ -1,13 +1,12 @@
 <?php
 
-return [ // <--- TEM QUE TER A PALAVRA 'return'
+return [
     'class_namespace' => 'App\\Livewire',
     'view_path' => resource_path('views/livewire'),
     'layout' => 'components.layouts.app',
     'lazy_placeholder' => null,
     
-    // A configuração que queremos
-    'asset_url' => env('APP_URL', null),
+    'asset_url' => null,
 
     'temporary_file_upload' => [
         'disk' => 'local', 
