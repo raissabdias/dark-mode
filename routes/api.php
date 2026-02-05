@@ -33,3 +33,12 @@ Route::get('/ads', function () {
         ->whereDate('end_date', '>=', now())
         ->get();
 });
+
+Route::get('/instalar-config-livewire', function () {
+    \Illuminate\Support\Facades\Artisan::call('vendor:publish', [
+        '--tag' => 'livewire:config',
+        '--force' => true
+    ]);
+    
+    return '<h1>Configuração do Livewire publicada</h1>';
+});
