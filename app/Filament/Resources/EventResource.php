@@ -67,7 +67,7 @@ class EventResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image')->label('Flyer'),
+                Tables\Columns\ImageColumn::make('image')->label('Flyer')->disk('supabase')->visibility('public'),
 
                 Tables\Columns\TextColumn::make('event_date')
                     ->label('Data')

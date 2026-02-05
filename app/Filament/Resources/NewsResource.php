@@ -100,7 +100,9 @@ class NewsResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
-                    ->label('Capa'),
+                    ->label('Capa')
+                    ->disk('supabase')
+                    ->visibility('public'),
                 
                 Tables\Columns\TextColumn::make('title')
                     ->label('Título')

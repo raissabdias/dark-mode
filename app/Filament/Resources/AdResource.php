@@ -66,7 +66,10 @@ class AdResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image')->label('Banner'),
+                Tables\Columns\ImageColumn::make('image')
+                ->label('Capa')
+                ->disk('supabase')
+                ->visibility('public'),
                 Tables\Columns\TextColumn::make('title')->searchable(),
                 Tables\Columns\TextColumn::make('start_date')->date('d/m/Y')->label('Início'),
                 Tables\Columns\TextColumn::make('end_date')->date('d/m/Y')->label('Fim'),
