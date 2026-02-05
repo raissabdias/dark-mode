@@ -3,8 +3,9 @@ import { ref, onMounted, computed } from "vue";
 import Carousel from 'primevue/carousel';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
-
 const highlights = ref([]);
+
+const emit = defineEmits(['open-news']);
 
 const responsiveOptions = ref([
     { breakpoint: '1024px', numVisible: 1, numScroll: 1 },
@@ -17,11 +18,16 @@ const isSingleItem = computed(() => highlights.value.length === 1);
 
 const fetchFeatured = async () => {
     try {
-        // DICA: Se quiser mostrar mais no carrossel, aumente o ->take(X) lá no routes/api.php
         const response = await fetch('/api/news/featured');
         highlights.value = await response.json();
     } catch (error) {
         console.error('Erro ao carregar destaques:', error);
+    }
+};
+
+const openNewsDetail = (id) => {
+    if (id) {
+        emit('open-news', id);
     }
 };
 
@@ -43,7 +49,6 @@ onMounted(() => {
                     <div class="overlay"></div>
                     <div class="hero-content p-8 md:p-16">
                         <Tag :value="slotProps.data.category" severity="secondary" class="mb-3 md:mb-4 category-tag" />
-
                         <h1 class="text-3xl md:text-4xl font-black mb-4 leading-tight title-shadow">
                             {{ slotProps.data.title }}
                         </h1>
@@ -55,7 +60,7 @@ onMounted(() => {
                             class="mb-6 text-base md:text-1xl text-gray-200 hidden sm:block max-w-3xl leading-relaxed title-shadow-sm">
                             {{ slotProps.data.excerpt }}
                         </p>
-                        <Button label="Ler Matéria" icon="pi pi-arrow-right" iconPos="right"
+                        <Button @click="openNewsDetail(slotProps.data.id)" label="Ler Matéria" icon="pi pi-arrow-right" iconPos="right"
                             class="p-button-rounded p-button-help font-bold px-6 py-3" />
                     </div>
                 </div>

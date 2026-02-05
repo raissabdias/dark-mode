@@ -48,6 +48,9 @@ class NewsResource extends Resource
                                 'Industrial' => 'Industrial',
                                 'New Wave' => 'New Wave',
                                 'Doom Metal' => 'Doom Metal',
+                                'Cinema' => 'Cinema',
+                                'Review' => 'Review',
+                                'Evento' => 'Evento',
                                 'Diversos' => 'Diversos',
                             ])
                             ->required(),

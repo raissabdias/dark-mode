@@ -16,7 +16,9 @@ defineProps({ post: Object });
             </div>
             <h3 class="title">{{ post.title }}</h3>
             <p class="excerpt">{{ post.excerpt }}</p>
-            <a href="#" class="read-more">Ler Matéria <i class="pi pi-arrow-right ml-1"></i></a>
+            <div @click="$emit('open-news', post.id)" class="flex items-center font-semibold text-sm mt-auto cursor-pointer read-more">
+                Ler Matéria <i class="pi pi-arrow-right ml-1"></i>
+            </div>
         </div>
     </div>
 </template>
@@ -29,7 +31,7 @@ defineProps({ post: Object });
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    height: 100%; /* Garante que o card ocupe toda a altura da linha */
+    height: 100%;
     transition: transform 0.2s, border-color 0.2s;
 }
 
@@ -40,7 +42,7 @@ defineProps({ post: Object });
 
 .image-wrapper {
     position: relative;
-    height: 200px; /* Altura fixa para a imagem */
+    height: 200px;
     width: 100%;
 }
 
@@ -63,13 +65,14 @@ defineProps({ post: Object });
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    flex-grow: 1; /* O conteúdo cresce para preencher o card */
+    flex-grow: 1;
 }
 
 .meta {
     font-size: 0.75rem; color: #888; margin-bottom: 0.5rem;
     display: flex; gap: 0.5rem;
 }
+
 .author { color: #c084fc; }
 
 .title {
@@ -80,13 +83,16 @@ defineProps({ post: Object });
 .excerpt {
     font-size: 0.85rem; color: #aaa; margin-bottom: 1rem;
     line-height: 1.5;
-    /* Limita o texto a 3 linhas para ficar uniforme */
     display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
 }
 
 .read-more {
-    margin-top: auto; /* Empurra o botão para baixo */
+    margin-top: auto;
     color: #a855f7; text-decoration: none;
     font-size: 0.8rem; font-weight: bold; text-transform: uppercase;
+}
+
+.read-more:hover {
+    color: #7e2dca; 
 }
 </style>

@@ -20,6 +20,10 @@ Route::get('/news/featured', function () {
         ->get();
 });
 
+Route::get('/news/{id}', function ($id) {
+    return News::findOrFail($id);
+});
+
 Route::get('/events', function () {
     return Event::where('is_active', true)
         ->where('event_date', '>=', now())
