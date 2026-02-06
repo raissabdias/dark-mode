@@ -56,11 +56,11 @@ class NewsResource extends Resource
 
                                 Forms\Components\ColorPicker::make('text_color')
                                     ->label('Cor do Texto')
-                                    ->default('#a855f7'), // Roxo
+                                    ->default('#FFF'),
                                 
                                 Forms\Components\ColorPicker::make('bg_color')
                                     ->label('Cor do Fundo')
-                                    ->default('#f3e8ff'),
+                                    ->default('#a855f7'),
                             ]),
 
                         Forms\Components\TextInput::make('author')

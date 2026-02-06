@@ -8,7 +8,8 @@ const routes = [
     {
         path: '/',
         name: 'home',
-        component: HomeView
+        component: HomeView,
+        meta: { title: 'Home' }
     },
     {
         path: '/noticia/:slug',
@@ -18,7 +19,8 @@ const routes = [
     {
         path: '/noticias',
         name: 'news.index',
-        component: NewsIndex
+        component: NewsIndex,
+        meta: { title: 'Notícias' }
     },
     {
         path: '/reviews',
@@ -27,12 +29,14 @@ const routes = [
         props: { 
             categoryIds: '6,7,8,9', 
             pageTitle: 'Reviews' 
-        }
+        },
+        meta: { title: 'Reviews' }
     },
     {
         path: '/agenda',
         name: 'agenda.index',
-        component: AgendaIndex
+        component: AgendaIndex,
+        meta: { title: 'Agenda' }
     }
 ];
 
@@ -42,6 +46,17 @@ const router = createRouter({
     scrollBehavior(to, from, savedPosition) {
         return { top: 0 };
     }
+});
+
+router.beforeEach((to, from, next) => {
+    const siteName = 'Dark Mode';
+    if (to.meta.title) {
+        document.title = `${to.meta.title} | ${siteName}`;
+    } else {
+        document.title = siteName;
+    }
+    
+    next();
 });
 
 export default router;

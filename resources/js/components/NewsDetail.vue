@@ -23,6 +23,7 @@ onMounted(async () => {
         const response = await fetch(`/api/news/${newsSlug}`);
         if (!response.ok) throw new Error('Falha ao buscar notícia');
         news.value = await response.json();
+        document.title = `${news.value.title} | Dark Mode`;
     } catch (error) {
         console.error(error);
     } finally {
