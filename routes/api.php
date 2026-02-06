@@ -20,8 +20,9 @@ Route::get('/news/featured', function () {
         ->get();
 });
 
-Route::get('/news/{id}', function ($id) {
-    return News::findOrFail($id);
+Route::get('/news/{slug}', function ($slug) {
+    return News::where('slug', $slug)
+        ->firstOrFail();
 });
 
 Route::get('/events', function () {

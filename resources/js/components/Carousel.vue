@@ -25,9 +25,9 @@ const fetchFeatured = async () => {
     }
 };
 
-const openNewsDetail = (id) => {
-    if (id) {
-        emit('open-news', id);
+const openNewsDetail = (slug) => {
+    if (slug) {
+        emit('open-news', slug);
     }
 };
 
@@ -60,7 +60,7 @@ onMounted(() => {
                             class="mb-6 text-base md:text-1xl text-gray-200 hidden sm:block max-w-3xl leading-relaxed title-shadow-sm">
                             {{ slotProps.data.excerpt }}
                         </p>
-                        <Button @click="openNewsDetail(slotProps.data.id)" label="Ler Matéria" icon="pi pi-arrow-right" iconPos="right"
+                        <Button @click="openNewsDetail(slotProps.data.slug)" label="Ler Matéria" icon="pi pi-arrow-right" iconPos="right"
                             class="p-button-rounded p-button-help font-bold px-6 py-3" />
                     </div>
                 </div>

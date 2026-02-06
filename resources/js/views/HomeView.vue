@@ -1,13 +1,15 @@
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
 import NewsCard from '../components/NewsCard.vue';
 import Sidebar from '../components/Sidebar.vue';
-import NewsDetail from '../components/NewsDetail.vue';
 import Carousel from '../components/Carousel.vue';
 
-const selectedPostId = ref(null);
 const newsList = ref([]);
 const isLoading = ref(true);
+
+const router = useRouter();
 
 const fetchNews = async () => {
     try {
@@ -27,12 +29,10 @@ onMounted(() => {
 
 // Funções de navegação
 const openNews = (id) => {
-    selectedPostId.value = id;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-};
-
-const closeNews = () => {
-    selectedPostId.value = null;
+    console.log(id);
+    if (id) {
+        router.push(`/noticia/${id}`);
+    }
 };
 </script>
 
@@ -45,7 +45,7 @@ const closeNews = () => {
                 Carregando...
             </div>
             <div v-else class="cards-grid">
-                <NewsCard v-for="post in newsList" :key="post.id" :post="post" @click="openNews(post.id)" />
+                <NewsCard v-for="post in newsList" :key="post.id" :post="post" @click="openNews(post.slug)" />
             </div>
         </div>
         <aside class="sidebar-section">

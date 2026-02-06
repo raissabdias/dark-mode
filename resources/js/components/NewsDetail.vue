@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+// 1. Importar o Sidebar
+import Sidebar from './Sidebar.vue';
 
 const props = defineProps({
     newsId: {
@@ -14,11 +16,11 @@ const router = useRouter();
 
 const news = ref(null);
 const loading = ref(true);
-const newsId = route.params.id;
+const newsSlug = route.params.slug || props.newsSlug;
 
 onMounted(async () => {
     try {
-        const response = await fetch(`/api/news/${newsId}`);
+        const response = await fetch(`/api/news/${newsSlug}`);
         if (!response.ok) throw new Error('Falha ao buscar notícia');
         news.value = await response.json();
     } catch (error) {
@@ -55,9 +57,8 @@ const cleanedContent = computed(() => {
 
 <template>
     <div class="flex flex-col lg:flex-row gap-8 py-8 animate-fade-in">
-        <div class="w-full">
-            <button @click="goBack"
-                class="mb-6 flex items-center gap-2 transition-colors cursor-pointer back-home">
+        <div class="w-full lg:w-3/4">
+            <button @click="goBack" class="mb-6 flex items-center gap-2 transition-colors cursor-pointer back-home">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
                         d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
@@ -91,8 +92,7 @@ const cleanedContent = computed(() => {
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                             </svg>
-                            por <span class="text-purple-400 font-semibold">{{ getAuthorName(news.author || news.user)
-                                }}</span>
+                            por <span class="text-purple-400 font-semibold">{{ getAuthorName(news.author || news.user) }}</span>
                         </span>
                     </div>
                     <h1
@@ -107,6 +107,10 @@ const cleanedContent = computed(() => {
                 Notícia não encontrada.
             </div>
         </div>
+        <aside class="w-full lg:w-1/4">
+            <Sidebar />
+        </aside>
+
     </div>
 </template>
 

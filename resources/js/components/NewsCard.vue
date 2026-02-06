@@ -16,7 +16,7 @@ defineProps({ post: Object });
             </div>
             <h3 class="title">{{ post.title }}</h3>
             <p class="excerpt">{{ post.excerpt }}</p>
-            <div @click="$emit('open-news', post.id)" class="flex items-center font-semibold text-sm mt-auto cursor-pointer read-more">
+            <div @click="$emit('open-news', post.slug)" class="flex items-center font-semibold text-sm mt-auto cursor-pointer read-more">
                 Ler Matéria <i class="pi pi-arrow-right ml-1"></i>
             </div>
         </div>
