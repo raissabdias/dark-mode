@@ -9,6 +9,8 @@ const fetchEvents = async (page = 1) => {
     try {
         const response = await fetch(`/api/events?page=${page}`);
         eventsData.value = await response.json();
+
+        console.log('Eventos carregados:', eventsData.value);
     } catch (error) {
         console.error('Erro ao carregar agenda:', error);
     } finally {
@@ -63,11 +65,10 @@ onMounted(() => {
                                 <i class="pi pi-map-marker text-purple-600"></i>
                                 <span class="line-clamp-1">{{ event.location || 'Local a confirmar' }}</span>
                             </div>
-                            <div class="mt-auto pt-4 border-t border-gray-800">
-                                <a :href="event.ticket_url || '#'" target="_blank"
+                            <div v-if="event.ticket_url" class="mt-auto pt-4 border-t border-gray-800">
+                                <a  :href="event.ticket_url || '#'" target="_blank"
                                     class="flex items-center justify-center gap-2 w-full bg-white/5 hover:bg-purple-600 text-gray-300 hover:text-white py-2 px-4 rounded-lg transition-all font-bold text-sm">
-                                    <i class="pi pi-ticket"></i>
-                                    {{ event.ticket_url ? 'Comprar Ingresso' : 'Mais Informações' }}
+                                    <i class="pi pi-ticket"></i>Mais informações
                                 </a>
                             </div>
                         </div>
