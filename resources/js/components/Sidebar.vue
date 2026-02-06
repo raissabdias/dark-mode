@@ -65,9 +65,10 @@ onMounted(() => {
                     </div>
                 </div>
             </div>
-            <Button label="Ver tudo" link class="w-full mt-2 text-xs text-gray-500" />
+            <router-link to="/agenda">
+                <Button label="Ver tudo" link class="w-full mt-2 text-xs text-gray-500" />
+            </router-link>
         </div>
-
         <div class="sidebar-block">
             <span class="ad-label">Patrocinado</span>
 
@@ -79,7 +80,6 @@ onMounted(() => {
                 </a>
             </div>
         </div>
-
         <div class="newsletter-block">
             <div class="newsletter-box">
                 <h4 class="text-white font-bold mb-2 flex items-center gap-3">

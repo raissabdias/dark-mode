@@ -31,18 +31,12 @@ const items = ref([
             <template #item="{ item, props }">
                 <div v-if="item.key === 'social-mobile'"
                     class="flex items-center justify-center gap-6 py-6 border-t border-white/10 mt-2 bg-black/50">
-                    <a href="#"
+                    <a href="https://www.instagram.com/dark_mode_magazine"
                         class="text-gray-400 text-2xl hover:text-purple-500 hover:scale-110 transition-transform"><i
                             class="pi pi-instagram"></i></a>
-                    <a href="#"
-                        class="text-gray-400 text-2xl hover:text-purple-500 hover:scale-110 transition-transform"><i
-                            class="pi pi-twitter"></i></a>
-                    <a href="#"
+                    <a href="https://www.youtube.com/@darkmode-revistadigital"
                         class="text-gray-400 text-2xl hover:text-purple-500 hover:scale-110 transition-transform"><i
                             class="pi pi-youtube"></i></a>
-                    <a href="#"
-                        class="text-gray-400 text-2xl hover:text-purple-500 hover:scale-110 transition-transform"><i
-                            class="pi pi-facebook"></i></a>
                 </div>
                 <router-link v-else :to="item.route" custom v-slot="{ href, navigate, isActive }">
                     <a :href="href" @click="navigate" class="flex items-center group w-full" v-bind="props.action"
@@ -56,18 +50,12 @@ const items = ref([
             </template>
             <template #end>
                 <div class="hidden lg:flex items-center gap-5 order-2">
-                    <a href="#"
+                    <a href="https://www.instagram.com/dark_mode_magazine"
                         class="text-gray-400 text-lg hover:text-purple-500 hover:-translate-y-1 transition-all"><i
                             class="pi pi-instagram"></i></a>
-                    <a href="#"
-                        class="text-gray-400 text-lg hover:text-purple-500 hover:-translate-y-1 transition-all"><i
-                            class="pi pi-twitter"></i></a>
-                    <a href="#"
+                    <a href="https://www.youtube.com/@darkmode-revistadigital"
                         class="text-gray-400 text-lg hover:text-purple-500 hover:-translate-y-1 transition-all"><i
                             class="pi pi-youtube"></i></a>
-                    <a href="#"
-                        class="text-gray-400 text-lg hover:text-purple-500 hover:-translate-y-1 transition-all"><i
-                            class="pi pi-facebook"></i></a>
                 </div>
             </template>
         </Menubar>
