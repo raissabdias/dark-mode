@@ -24,7 +24,10 @@ const routes = [
         path: '/reviews',
         name: 'reviews.index',
         component: NewsIndex,
-        props: { category: 'Review' } 
+        props: { 
+            categoryIds: '4', 
+            pageTitle: 'Reviews' 
+        }
     },
     {
         path: '/agenda',

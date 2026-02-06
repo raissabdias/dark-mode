@@ -1,14 +1,17 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'; // Adicionei 'watch'
+import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import NewsCard from '../components/NewsCard.vue';
 import Sidebar from '../components/Sidebar.vue';
 
-// Recebe a categoria via Rota (definido no router.js)
 const props = defineProps({
-    category: {
+    categoryIds: {
         type: String,
         default: null
+    },
+    pageTitle: {
+        type: String,
+        default: 'Todas as Notícias'
     }
 });
 
@@ -20,8 +23,8 @@ const fetchNews = async (page = 1) => {
     loading.value = true;
     try {
         let url = `/api/news-paginated?page=${page}`;
-        if (props.category) {
-            url += `&category=${props.category}`;
+        if (props.categoryIds) {
+            url += `&categories=${props.categoryIds}`;
         }
 
         const response = await fetch(url);
@@ -42,7 +45,7 @@ onMounted(() => {
     fetchNews();
 });
 
-watch(() => props.category, () => {
+watch(() => props.categoryIds, () => {
     fetchNews(1);
 });
 </script>

@@ -30,12 +30,26 @@ Route::get('/news/{slug}', function ($slug) {
 });
 
 Route::get('/news-paginated', function (Request $request) {
-    $query = \App\Models\News::with('category')->latest();
-    if ($request->has('category') && $request->category) {
+    // Carrega a categoria junto
+    $query = News::with('category')->latest();
+
+    // Filtro por MÚLTIPLAS CATEGORIAS (IDs)
+    // Espera algo como: ?categories=1,3,5
+    if ($request->has('categories') && $request->categories) {
+        // Transforma "1,3,5" em array [1, 3, 5]
+        $categoryIds = explode(',', $request->categories);
+        
+        $query->whereIn('category_id', $categoryIds);
+    }
+    
+    // Mantém a compatibilidade antiga (busca pelo slug único se necessário)
+    // Útil se você clicar numa tag específica
+    if ($request->has('category_slug')) {
         $query->whereHas('category', function($q) use ($request) {
-            $q->where('slug', $request->category);
+            $q->where('slug', $request->category_slug);
         });
     }
+
     return $query->paginate(9);
 });
 
