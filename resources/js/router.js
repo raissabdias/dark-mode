@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from './views/HomeView.vue';
 import NewsDetail from './components/NewsDetail.vue';
+import NewsIndex from './views/NewsIndex.vue';
 
 const routes = [
     {
@@ -12,6 +13,17 @@ const routes = [
         path: '/noticia/:slug',
         name: 'news.detail',
         component: NewsDetail
+    },
+    {
+        path: '/noticias',
+        name: 'news.index',
+        component: NewsIndex
+    },
+    {
+        path: '/reviews',
+        name: 'reviews.index',
+        component: NewsIndex,
+        props: { category: 'Review' } 
     }
 ];
 

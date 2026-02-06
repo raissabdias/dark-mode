@@ -4,6 +4,7 @@ use App\Models\Ad;
 use App\Models\Event;
 use App\Models\News;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 Route::get('/news', function () {
     return News::where('is_active', true)
@@ -23,6 +24,14 @@ Route::get('/news/featured', function () {
 Route::get('/news/{slug}', function ($slug) {
     return News::where('slug', $slug)
         ->firstOrFail();
+});
+
+Route::get('/news-paginated', function (Request $request) {
+    $query = \App\Models\News::latest();
+    if ($request->has('category') && $request->category) {
+        $query->where('category', $request->category);
+    }
+    return $query->paginate(9);
 });
 
 Route::get('/events', function () {
