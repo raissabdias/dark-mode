@@ -48,7 +48,11 @@ onMounted(() => {
                     <img :src="slotProps.data.image_url" :alt="slotProps.data.title" class="hero-image" />
                     <div class="overlay"></div>
                     <div class="hero-content p-8 md:p-16">
-                        <Tag :value="slotProps.data.category.name" severity="secondary" class="mb-3 md:mb-4 category-tag" />
+                        <Tag v-if="slotProps.data.category" :style="{
+                            backgroundColor: slotProps.data.category.bg_color,
+                            color: slotProps.data.category.text_color
+                        }" :value="slotProps.data.category.name" severity="secondary"
+                            class="mb-3 md:mb-4 category-tag" />
                         <h1 class="text-3xl md:text-4xl font-black mb-4 leading-tight title-shadow">
                             {{ slotProps.data.title }}
                         </h1>
@@ -60,7 +64,8 @@ onMounted(() => {
                             class="mb-6 text-base md:text-1xl text-gray-200 hidden sm:block max-w-3xl leading-relaxed title-shadow-sm">
                             {{ slotProps.data.excerpt }}
                         </p>
-                        <Button @click="openNewsDetail(slotProps.data.slug)" label="Ler Matéria" icon="pi pi-arrow-right" iconPos="right"
+                        <Button @click="openNewsDetail(slotProps.data.slug)" label="Ler Matéria"
+                            icon="pi pi-arrow-right" iconPos="right"
                             class="p-button-rounded p-button-help font-bold px-6 py-3" />
                     </div>
                 </div>
@@ -124,12 +129,9 @@ onMounted(() => {
 }
 
 .category-tag {
-    background-color: #a855f7 !important;
-    color: white !important;
     font-weight: bold;
     text-transform: uppercase;
     font-size: 0.75rem;
     letter-spacing: 1px;
-    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
 }
 </style>

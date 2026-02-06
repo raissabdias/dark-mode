@@ -74,8 +74,10 @@ const cleanedContent = computed(() => {
                     class="w-full h-64 md:h-96 object-cover">
                 <div class="p-6 md:p-8">
                     <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-4">
-                        <span
-                            class="bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-2 py-1 rounded-md text-xs font-semibold uppercase tracking-wide">
+                        <span class="px-2 py-1 rounded-md text-xs font-semibold uppercase tracking-wide" :style="{
+                            backgroundColor: news.category.bg_color,
+                            color: news.category.text_color
+                        }">
                             {{ news.category.name || 'Notícia' }}
                         </span>
                         <span class="flex items-center gap-1">
@@ -92,7 +94,8 @@ const cleanedContent = computed(() => {
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                             </svg>
-                            por <span class="text-purple-400 font-semibold">{{ getAuthorName(news.author || news.user) }}</span>
+                            por <span class="text-purple-400 font-semibold">{{ getAuthorName(news.author || news.user)
+                                }}</span>
                         </span>
                     </div>
                     <h1

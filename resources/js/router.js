@@ -25,7 +25,7 @@ const routes = [
         name: 'reviews.index',
         component: NewsIndex,
         props: { 
-            categoryIds: '4', 
+            categoryIds: '6,7,8,9', 
             pageTitle: 'Reviews' 
         }
     },

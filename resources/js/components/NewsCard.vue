@@ -6,7 +6,10 @@ defineProps({ post: Object });
     <div class="news-card">
         <div class="image-wrapper">
             <img :src="post.image_url" :alt="post.title" />
-            <span class="category-badge">{{ post.category.name }}</span>
+            <span v-if="post.category" class="category-badge" :style="{
+                backgroundColor: post.category.bg_color,
+                color: post.category.text_color
+            }">{{ post.category.name }}</span>
         </div>
         <div class="content">
             <div class="meta">
@@ -16,7 +19,8 @@ defineProps({ post: Object });
             </div>
             <h3 class="title">{{ post.title }}</h3>
             <p class="excerpt">{{ post.excerpt }}</p>
-            <div @click="$emit('open-news', post.slug)" class="flex items-center font-semibold text-sm mt-auto cursor-pointer read-more">
+            <div @click="$emit('open-news', post.slug)"
+                class="flex items-center font-semibold text-sm mt-auto cursor-pointer read-more">
                 Ler Matéria <i class="pi pi-arrow-right ml-1"></i>
             </div>
         </div>
@@ -54,10 +58,14 @@ defineProps({ post: Object });
 
 .category-badge {
     position: absolute;
-    top: 10px; right: 10px;
-    background: #a855f7; color: white;
-    font-size: 0.7rem; font-weight: bold;
-    padding: 2px 8px; border-radius: 4px;
+    top: 10px;
+    right: 10px;
+    background: #a855f7;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 4px;
     text-transform: uppercase;
 }
 
@@ -69,30 +77,46 @@ defineProps({ post: Object });
 }
 
 .meta {
-    font-size: 0.75rem; color: #888; margin-bottom: 0.5rem;
-    display: flex; gap: 0.5rem;
+    font-size: 0.75rem;
+    color: #888;
+    margin-bottom: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
 }
 
-.author { color: #c084fc; }
+.author {
+    color: #c084fc;
+}
 
 .title {
-    font-size: 1.1rem; font-weight: bold; color: white;
-    margin-bottom: 0.5rem; line-height: 1.3;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
 }
 
 .excerpt {
-    font-size: 0.85rem; color: #aaa; margin-bottom: 1rem;
+    font-size: 0.85rem;
+    color: #aaa;
+    margin-bottom: 1rem;
     line-height: 1.5;
-    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .read-more {
     margin-top: auto;
-    color: #a855f7; text-decoration: none;
-    font-size: 0.8rem; font-weight: bold; text-transform: uppercase;
+    color: #a855f7;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
 .read-more:hover {
-    color: #7e2dca; 
+    color: #7e2dca;
 }
 </style>
