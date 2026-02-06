@@ -48,7 +48,7 @@ onMounted(() => {
                     <img :src="slotProps.data.image_url" :alt="slotProps.data.title" class="hero-image" />
                     <div class="overlay"></div>
                     <div class="hero-content p-8 md:p-16">
-                        <Tag :value="slotProps.data.category" severity="secondary" class="mb-3 md:mb-4 category-tag" />
+                        <Tag :value="slotProps.data.category.name" severity="secondary" class="mb-3 md:mb-4 category-tag" />
                         <h1 class="text-3xl md:text-4xl font-black mb-4 leading-tight title-shadow">
                             {{ slotProps.data.title }}
                         </h1>

@@ -6,7 +6,7 @@ defineProps({ post: Object });
     <div class="news-card">
         <div class="image-wrapper">
             <img :src="post.image_url" :alt="post.title" />
-            <span class="category-badge">{{ post.category }}</span>
+            <span class="category-badge">{{ post.category.name }}</span>
         </div>
         <div class="content">
             <div class="meta">

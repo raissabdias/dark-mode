@@ -37,23 +37,31 @@ class NewsResource extends Resource
                             ->required()
                             ->unique(ignoreRecord: true),
 
-                        Forms\Components\Select::make('category')
+                        Forms\Components\Select::make('category_id')
                             ->label('Categoria')
-                            ->options([
-                                'Dark Metal' => 'Dark Metal',
-                                'Synth Wave' => 'Synth Wave',
-                                'Dark' => 'Dark',
-                                'Post-Punk' => 'Post-Punk',
-                                'Gothic Rock' => 'Gothic Rock',
-                                'Industrial' => 'Industrial',
-                                'New Wave' => 'New Wave',
-                                'Doom Metal' => 'Doom Metal',
-                                'Cinema' => 'Cinema',
-                                'Review' => 'Review',
-                                'Evento' => 'Evento',
-                                'Diversos' => 'Diversos',
-                            ])
-                            ->required(),
+                            ->relationship('category', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('name')
+                                    ->label('Nome da Categoria')
+                                    ->required()
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                                
+                                Forms\Components\TextInput::make('slug')
+                                    ->required()
+                                    ->readOnly(),
+
+                                Forms\Components\ColorPicker::make('text_color')
+                                    ->label('Cor do Texto')
+                                    ->default('#a855f7'), // Roxo
+                                
+                                Forms\Components\ColorPicker::make('bg_color')
+                                    ->label('Cor do Fundo')
+                                    ->default('#f3e8ff'),
+                            ]),
 
                         Forms\Components\TextInput::make('author')
                             ->label('Autor')
@@ -112,9 +120,9 @@ class NewsResource extends Resource
                     ->searchable()
                     ->sortable(),
                 
-                Tables\Columns\TextColumn::make('category')
+                Tables\Columns\TextColumn::make('category.name')
                     ->label('Categoria')
-                    ->badge() // Deixa bonitinho com cor de fundo
+                    ->badge()
                     ->sortable(),
                 
                 Tables\Columns\TextColumn::make('published_at')

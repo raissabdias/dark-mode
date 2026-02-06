@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 Route::get('/news', function () {
     return News::where('is_active', true)
+        ->with(['category'])
         ->orderBy('published_at', 'desc')
         ->take(6)
         ->get();
@@ -16,6 +17,7 @@ Route::get('/news', function () {
 Route::get('/news/featured', function () {
     return \App\Models\News::where('is_active', true)
         ->where('is_featured', true)
+        ->with(['category'])
         ->orderBy('published_at', 'desc')
         ->take(3)
         ->get();
@@ -23,13 +25,16 @@ Route::get('/news/featured', function () {
 
 Route::get('/news/{slug}', function ($slug) {
     return News::where('slug', $slug)
+        ->with(['author', 'category'])
         ->firstOrFail();
 });
 
 Route::get('/news-paginated', function (Request $request) {
-    $query = \App\Models\News::latest();
+    $query = \App\Models\News::with('category')->latest();
     if ($request->has('category') && $request->category) {
-        $query->where('category', $request->category);
+        $query->whereHas('category', function($q) use ($request) {
+            $q->where('slug', $request->category);
+        });
     }
     return $query->paginate(9);
 });

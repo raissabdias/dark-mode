@@ -13,7 +13,7 @@ class News extends Model
     protected $fillable = [
         'title',
         'slug',
-        'category',
+        'category_id',
         'author',
         'excerpt',
         'content',
@@ -39,5 +39,10 @@ class News extends Model
     public function getDateFormattedAttribute()
     {
         return $this->published_at ? $this->published_at->format('d/m/y') : null;
+    }
+    
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }
