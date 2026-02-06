@@ -3,27 +3,38 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CategoryResource\Pages;
-use App\Filament\Resources\CategoryResource\RelationManagers;
 use App\Models\Category;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-flag';
+    
+    protected static ?string $navigationLabel = 'Categorias';
+
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                
+                Forms\Components\TextInput::make('slug')
+                    ->required()
+                    ->readOnly(),
+
+                Forms\Components\ColorPicker::make('text_color')->label('Cor do Texto (Hex)')->default('#FFF'),
+                Forms\Components\ColorPicker::make('bg_color')->label('Cor do Fundo (Hex)')->default('#a855f7'),
             ]);
     }
 
@@ -31,18 +42,9 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                //
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('slug'),
+                Tables\Columns\ColorColumn::make('bg_color')->label('Cor'),
             ]);
     }
 

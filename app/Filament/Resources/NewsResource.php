@@ -20,6 +20,8 @@ class NewsResource extends Resource
     
     protected static ?string $navigationLabel = 'Notícias';
 
+    protected static ?int $navigationSort = 1;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -141,6 +143,7 @@ class NewsResource extends Resource
                     ->falseIcon('heroicon-o-minus')
                     ->color(fn (string $state): string => $state ? 'warning' : 'gray'),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])

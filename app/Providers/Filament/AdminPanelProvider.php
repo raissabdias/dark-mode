@@ -17,9 +17,18 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Http\Responses\Auth\Contracts\LoginResponse;
+use App\Filament\Auth\LoginResponse as CustomLoginResponse;
 
 class AdminPanelProvider extends PanelProvider
 {
+    public function register(): void
+    {
+        parent::register();
+
+        $this->app->bind(LoginResponse::class, CustomLoginResponse::class);
+    }
+
     public function panel(Panel $panel): Panel
     {
         return $panel

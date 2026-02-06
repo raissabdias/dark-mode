@@ -16,6 +16,8 @@ class AdResource extends Resource
 
     protected static ?string $navigationLabel = 'Anúncios';
 
+    protected static ?int $navigationSort = 4;
+
     public static function form(Forms\Form $form): Forms\Form
     {
         return $form

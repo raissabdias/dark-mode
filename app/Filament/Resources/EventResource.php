@@ -16,6 +16,8 @@ class EventResource extends Resource
 
     protected static ?string $navigationLabel = 'Agenda';
 
+    protected static ?int $navigationSort = 2;
+
     public static function form(Forms\Form $form): Forms\Form
     {
         return $form
