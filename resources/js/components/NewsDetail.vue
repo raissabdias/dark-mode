@@ -1,5 +1,6 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 const props = defineProps({
     newsId: {
@@ -8,12 +9,16 @@ const props = defineProps({
     }
 });
 
+const route = useRoute();
+const router = useRouter();
+
 const news = ref(null);
 const loading = ref(true);
+const newsId = route.params.id;
 
 onMounted(async () => {
     try {
-        const response = await fetch(`/api/news/${props.newsId}`);
+        const response = await fetch(`/api/news/${newsId}`);
         if (!response.ok) throw new Error('Falha ao buscar notícia');
         news.value = await response.json();
     } catch (error) {
@@ -22,6 +27,10 @@ onMounted(async () => {
         loading.value = false;
     }
 });
+
+const goBack = () => {
+    router.push('/');
+};
 
 const formatDate = (dateString) => {
     if (!dateString) return '';
@@ -34,12 +43,20 @@ const getAuthorName = (authorData) => {
     if (!authorData) return 'Redação';
     return authorData.name || authorData;
 };
+
+const cleanedContent = computed(() => {
+    if (!news.value) return '';
+    const rawContent = news.value.content || news.value.body || '';
+    const txt = document.createElement("textarea");
+    txt.innerHTML = rawContent;
+    return txt.value;
+});
 </script>
 
 <template>
     <div class="flex flex-col lg:flex-row gap-8 py-8 animate-fade-in">
         <div class="w-full">
-            <button @click="$emit('go-back')"
+            <button @click="goBack"
                 class="mb-6 flex items-center gap-2 transition-colors cursor-pointer back-home">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
@@ -75,15 +92,15 @@ const getAuthorName = (authorData) => {
                                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                             </svg>
                             por <span class="text-purple-400 font-semibold">{{ getAuthorName(news.author || news.user)
-                            }}</span>
+                                }}</span>
                         </span>
                     </div>
                     <h1
                         class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6 leading-tight font-michroma">
                         {{ news.title }}
                     </h1>
-                    <div class="prose prose-lg max-w-none dark:prose-invert text-gray-700 dark:text-gray-300 leading-relaxed"
-                        v-html="news.content || news.body"></div>
+                    <div class="prose prose-lg max-w-none dark:prose-invert text-gray-700 dark:text-gray-300 leading-relaxed video-container"
+                        v-html="cleanedContent"></div>
                 </div>
             </article>
             <div v-else class="text-center py-10 text-red-500">
@@ -121,5 +138,20 @@ const getAuthorName = (authorData) => {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+:deep(.prose iframe),
+:deep(.body-text iframe) {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9;
+    border-radius: 0.5rem;
+    margin: 2rem 0;
+}
+
+.body-text,
+.prose {
+    max-width: 100%;
+    overflow-x: hidden;
 }
 </style>
