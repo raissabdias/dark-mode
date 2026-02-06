@@ -8,7 +8,6 @@ import Carousel from '../components/Carousel.vue';
 
 const newsList = ref([]);
 const isLoading = ref(true);
-
 const router = useRouter();
 
 const fetchNews = async () => {
@@ -27,12 +26,12 @@ onMounted(() => {
     fetchNews();
 });
 
-// Funções de navegação
-const openNews = (id) => {
-    console.log(id);
-    if (id) {
-        router.push(`/noticia/${id}`);
-    }
+const openNews = (slug) => {
+    if (slug) router.push(`/noticia/${slug}`);
+};
+
+const goToAllNews = () => {
+    router.push({ path: '/noticias', query: { page: 2 } });
 };
 </script>
 
@@ -44,8 +43,17 @@ const openNews = (id) => {
             <div v-if="isLoading" class="text-white text-center py-10">
                 Carregando...
             </div>
-            <div v-else class="cards-grid">
-                <NewsCard v-for="post in newsList" :key="post.id" :post="post" @click="openNews(post.slug)" />
+            <div v-else>
+                <div class="cards-grid mb-8">
+                    <NewsCard v-for="post in newsList" :key="post.id" :post="post" @open-news="openNews" />
+                </div>
+                <div class="flex justify-center w-full">
+                    <button @click="goToAllNews"
+                        class="group relative inline-flex items-center justify-center px-8 py-3 font-bold text-white transition-all duration-200 bg-transparent border-2 border-purple-600 rounded-full hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-600">
+                        <span>Carregar mais notícias</span>
+                        <i class="pi pi-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                </div>
             </div>
         </div>
         <aside class="sidebar-section">

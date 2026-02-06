@@ -76,7 +76,7 @@ const cleanedContent = computed(() => {
                     <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-4">
                         <span
                             class="bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-2 py-1 rounded-md text-xs font-semibold uppercase tracking-wide">
-                            {{ news.category || 'Notícia' }}
+                            {{ news.category.name || 'Notícia' }}
                         </span>
                         <span class="flex items-center gap-1">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
