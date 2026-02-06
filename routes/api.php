@@ -35,10 +35,10 @@ Route::get('/news-paginated', function (Request $request) {
 });
 
 Route::get('/events', function () {
-    return Event::where('is_active', true)
+    return \App\Models\Event::query()
         ->where('event_date', '>=', now())
         ->orderBy('event_date', 'asc')
-        ->get();
+        ->paginate(10);
 });
 
 Route::get('/ads', function () {

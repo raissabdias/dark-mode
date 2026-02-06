@@ -14,9 +14,9 @@ const formatDateStyle = (dateString) => {
 
 const fetchEvents = async () => {
     try {
-        const response = await fetch('/api/events');
+        const response = await fetch('/api/events?page=1');
         const data = await response.json();
-        nextGigs.value = data.map(event => ({
+        nextGigs.value = data.data.map(event => ({
             id: event.id,
             band: event.title, 
             loc: event.location,

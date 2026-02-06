@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from './views/HomeView.vue';
 import NewsDetail from './components/NewsDetail.vue';
 import NewsIndex from './views/NewsIndex.vue';
+import AgendaIndex from './views/AgendaIndex.vue';
 
 const routes = [
     {
@@ -24,6 +25,11 @@ const routes = [
         name: 'reviews.index',
         component: NewsIndex,
         props: { category: 'Review' } 
+    },
+    {
+        path: '/agenda',
+        name: 'agenda.index',
+        component: AgendaIndex
     }
 ];
 
