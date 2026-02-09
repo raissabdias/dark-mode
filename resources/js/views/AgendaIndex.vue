@@ -9,8 +9,7 @@ const fetchEvents = async (page = 1) => {
     try {
         const response = await fetch(`/api/events?page=${page}`);
         eventsData.value = await response.json();
-
-        console.log('Eventos carregados:', eventsData.value);
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // Rola pro topo ao mudar página
     } catch (error) {
         console.error('Erro ao carregar agenda:', error);
     } finally {
@@ -26,7 +25,7 @@ onMounted(() => {
 <template>
     <div class="py-8 animate-fade-in w-full">
         <div class="w-full">
-            <h1 class="text-3xl md:text-4xl font-bold text-white mb-8 border-l-4 border-purple-500 pl-4 font-michroma">
+            <h1 class="text-2xl md:text-4xl font-bold text-white mb-8 border-l-4 border-purple-500 pl-4 font-michroma">
                 Agenda de Shows
             </h1>
             <div v-if="loading" class="flex justify-center py-20">
@@ -36,44 +35,49 @@ onMounted(() => {
                 <div v-if="eventsData.data.length === 0" class="text-gray-400 text-lg">
                     Nenhum evento encontrado por enquanto.
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 mb-12">
                     <div v-for="event in eventsData.data" :key="event.id"
-                        class="group bg-gray-900 rounded-xl overflow-hidden border border-gray-800 hover:border-purple-500 hover:-translate-y-1 transition-all duration-300 flex flex-col shadow-lg hover:shadow-purple-900/20">
-                        <div class="relative w-full aspect-[2/3] overflow-hidden">
+                        class="group bg-gray-900 rounded-xl overflow-hidden border border-gray-800 hover:border-purple-500 hover:-translate-y-1 transition-all duration-300 flex flex-row sm:flex-col shadow-lg hover:shadow-purple-900/20 h-auto sm:h-auto">
+
+                        <div class="relative w-28 xs:w-32 sm:w-full sm:aspect-[2/3] shrink-0 overflow-hidden">
                             <img :src="event.image_url || '/images/default-event.jpg'" :alt="event.title"
                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                             <div
-                                class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60">
+                                class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60 hidden sm:block">
                             </div>
                             <div
-                                class="absolute top-3 right-3 bg-black/80 backdrop-blur-sm border border-purple-500/50 text-white p-2 text-center rounded-lg min-w-[60px] shadow-lg">
-                                <div class="text-xl font-black leading-none text-purple-400">{{ event.day }}</div>
-                                <div class="text-[10px] font-bold uppercase tracking-wider">{{ event.month }}</div>
+                                class="absolute top-1 right-1 sm:top-3 sm:right-3 bg-black/80 backdrop-blur-sm border border-purple-500/50 text-white p-1 sm:p-2 text-center rounded-md sm:rounded-lg min-w-[40px] sm:min-w-[60px] shadow-lg">
+                                <div class="text-sm sm:text-xl font-black leading-none text-purple-400">{{ event.day }}
+                                </div>
+                                <div class="text-[8px] sm:text-[10px] font-bold uppercase tracking-wider">{{ event.month
+                                    }}</div>
                             </div>
                         </div>
-                        <div class="p-5 flex flex-col flex-grow relative">
-                            <div
-                                class="text-xs font-bold text-purple-400 mb-2 uppercase tracking-wide flex items-center gap-1">
-                                <i class="pi pi-calendar"></i>
-                                {{ event.date_formatted }}
+                        <div class="p-3 sm:p-5 flex flex-col flex-grow relative w-full justify-between">
+                            <div>
+                                <div
+                                    class="text-[10px] sm:text-xs font-bold text-purple-400 mb-1 sm:mb-2 uppercase tracking-wide flex items-center gap-1">
+                                    <i class="pi pi-calendar text-[10px] sm:text-xs"></i>
+                                    {{ event.date_formatted }}
+                                </div>
+                                <h3
+                                    class="text-xl sm:text-1xl font-bold text-white mb-1 sm:mb-2 leading-tight group-hover:text-purple-300 transition-colors line-clamp-2">
+                                    {{ event.title }}
+                                </h3>
+                                <div class="text-gray-400 text-xs sm:text-sm mb-2 flex items-center gap-2">
+                                    <i class="pi pi-map-marker text-purple-600"></i>
+                                    <span class="line-clamp-1">{{ event.location || 'Local a confirmar' }}</span>
+                                </div>
                             </div>
-                            <h3
-                                class="text-xl font-bold text-white mb-2 leading-tight group-hover:text-purple-300 transition-colors line-clamp-2">
-                                {{ event.title }}
-                            </h3>
-                            <div class="text-gray-400 text-sm mb-4 flex items-center gap-2">
-                                <i class="pi pi-map-marker text-purple-600"></i>
-                                <span class="line-clamp-1">{{ event.location || 'Local a confirmar' }}</span>
-                            </div>
-                            <div v-if="event.ticket_url" class="mt-auto pt-4 border-t border-gray-800">
-                                <a  :href="event.ticket_url || '#'" target="_blank"
-                                    class="flex items-center justify-center gap-2 w-full bg-white/5 hover:bg-purple-600 text-gray-300 hover:text-white py-2 px-4 rounded-lg transition-all font-bold text-sm">
-                                    <i class="pi pi-ticket"></i>Mais informações
+                            <div v-if="event.ticket_url" class="mt-2 sm:mt-auto pt-2 sm:pt-4 border-t border-gray-800">
+                                <a :href="event.ticket_url || '#'" target="_blank"
+                                    class="flex items-center justify-center gap-2 w-full bg-white/5 hover:bg-purple-600 text-gray-300 hover:text-white py-1.5 sm:py-2 px-3 sm:px-4 rounded-lg transition-all font-bold text-xs sm:text-sm">
+                                    <i class="pi pi-ticket"></i>
+                                    <span>Ingressos</span>
                                 </a>
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div v-if="eventsData.last_page > 1" class="flex justify-center gap-2">
                     <button v-for="page in eventsData.last_page" :key="page" @click="fetchEvents(page)"

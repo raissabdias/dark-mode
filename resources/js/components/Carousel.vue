@@ -13,7 +13,6 @@ const responsiveOptions = ref([
     { breakpoint: '560px', numVisible: 1, numScroll: 1 }
 ]);
 
-// Verifica se existe apenas 1 notícia para travar o carrossel
 const isSingleItem = computed(() => highlights.value.length === 1);
 
 const fetchFeatured = async () => {
@@ -26,9 +25,7 @@ const fetchFeatured = async () => {
 };
 
 const openNewsDetail = (slug) => {
-    if (slug) {
-        emit('open-news', slug);
-    }
+    if (slug) emit('open-news', slug);
 };
 
 onMounted(() => {
@@ -40,24 +37,36 @@ onMounted(() => {
     <div v-if="highlights.length > 0" class="carousel-wrapper">
         <Carousel :value="highlights" :numVisible="1" :numScroll="1" :responsiveOptions="responsiveOptions"
             :circular="!isSingleItem" :autoplayInterval="isSingleItem ? 0 : 5000" :showIndicators="!isSingleItem" :pt="{
-                previousButton: { class: isSingleItem ? '!hidden' : '' },
-                nextButton: { class: isSingleItem ? '!hidden' : '' }
+                pcPrevButton: {
+                    root: {
+                        class: isSingleItem ? '!hidden' : '!hidden md:!flex'
+                    }
+                },
+                pcNextButton: {
+                    root: {
+                        class: isSingleItem ? '!hidden' : '!hidden md:!flex'
+                    }
+                },
+                content: {
+                    class: '!p-0'
+                }
             }">
             <template #item="slotProps">
-                <div class="hero-slide h-[450px] md:h-[700px]">
+                <div class="hero-slide h-[450px] md:h-[550px]">
                     <img :src="slotProps.data.image_url" :alt="slotProps.data.title" class="hero-image" />
                     <div class="overlay"></div>
-                    <div class="hero-content p-8 md:p-16">
+                    <div class="hero-content p-5 md:p-16 w-full">
                         <Tag v-if="slotProps.data.category" :style="{
                             backgroundColor: slotProps.data.category.bg_color,
                             color: slotProps.data.category.text_color
                         }" :value="slotProps.data.category.name" severity="secondary"
                             class="mb-3 md:mb-4 category-tag" />
-                        <h1 class="text-3xl md:text-4xl font-black mb-4 leading-tight title-shadow">
+                        <h1
+                            class="text-1xl sm:text-0xl md:text-4xl font-black mb-4 leading-tight title-shadow line-clamp-3 md:line-clamp-none">
                             {{ slotProps.data.title }}
                         </h1>
                         <div
-                            class="text-sm text-gray-300 mb-3 font-bold uppercase tracking-wider flex items-center gap-2">
+                            class="text-xs md:text-sm text-gray-300 mb-3 font-bold uppercase tracking-wider flex items-center gap-2">
                             <i class="pi pi-calendar text-purple-400"></i> {{ slotProps.data.date_formatted }}
                         </div>
                         <p
@@ -66,7 +75,7 @@ onMounted(() => {
                         </p>
                         <Button @click="openNewsDetail(slotProps.data.slug)" label="Ler Matéria"
                             icon="pi pi-arrow-right" iconPos="right"
-                            class="p-button-rounded p-button-help font-bold px-6 py-3" />
+                            class="p-button-rounded p-button-help font-bold px-4 py-2 text-sm md:px-6 md:py-3 md:text-base" />
                     </div>
                 </div>
             </template>
@@ -76,8 +85,15 @@ onMounted(() => {
 
 <style scoped>
 .carousel-wrapper {
-    margin-bottom: 3rem;
-    border-bottom: 2px solid #333;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #333;
+}
+
+@media (min-width: 768px) {
+    .carousel-wrapper {
+        margin-bottom: 3rem;
+        border-bottom: 2px solid #333;
+    }
 }
 
 .hero-slide {
@@ -109,14 +125,13 @@ onMounted(() => {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to top, rgba(0, 0, 0, .85) 15%, rgba(0, 0, 0, 0.5) 30%, transparent 100%);
+    background: linear-gradient(to top, rgba(0, 0, 0, .9) 15%, rgba(0, 0, 0, 0.5) 30%, transparent 100%);
     z-index: 2;
 }
 
 .hero-content {
     position: relative;
     z-index: 3;
-    width: 100%;
     color: white;
 }
 

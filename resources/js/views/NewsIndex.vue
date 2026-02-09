@@ -58,7 +58,7 @@ watch(() => props.categoryIds, () => {
 <template>
     <div class="flex flex-col lg:flex-row gap-8 py-8 animate-fade-in">
         <div class="w-full lg:w-3/4">
-            <h1 class="text-3xl md:text-4xl font-bold text-white mb-8 border-l-4 border-purple-500 pl-4 font-michroma">
+            <h1 class="text-2xl md:text-4xl font-bold text-white mb-8 border-l-4 border-purple-500 pl-4 font-michroma">
                 {{ pageTitle }}
             </h1>
             <div v-if="loading" class="flex justify-center py-20">

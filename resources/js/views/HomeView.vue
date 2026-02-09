@@ -45,11 +45,11 @@ const goToAllNews = () => {
             </div>
             <div v-else>
                 <div class="cards-grid mb-8">
-                    <NewsCard v-for="post in newsList" :key="post.id" :post="post" @open-news="openNews" />
+                    <NewsCard v-for="post in newsList.slice(0, 9)" :key="post.id" :post="post" @open-news="openNews" />
                 </div>
                 <div class="flex justify-center w-full">
                     <button @click="goToAllNews"
-                        class="group relative inline-flex items-center justify-center px-8 py-3 font-bold text-white transition-all duration-200 bg-transparent border-2 border-purple-600 rounded-full hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-600 cursor-pointer">
+                        class="group relative inline-flex items-center justify-center px-6 py-3 font-bold text-white transition-all duration-200 bg-transparent border-2 border-purple-600 rounded-full hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-600 text-sm md:text-base">
                         <span>Carregar mais notícias</span>
                         <i class="pi pi-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
                     </button>
@@ -67,28 +67,31 @@ const goToAllNews = () => {
     display: grid;
     grid-template-columns: 1fr 320px;
     gap: 40px;
-    margin-top: 20px;
+    margin-top: 40px;
+    padding-bottom: 40px;
 }
 
 .cards-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 24px;
 }
 
 .section-title {
     font-family: 'Michroma', sans-serif;
     font-size: 1.8rem;
     color: white;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     border-left: 4px solid #a855f7;
-    padding-left: 12px;
+    padding-left: 16px;
 }
 
+/* Tablet e Laptops menores (até 1024px) */
 @media (max-width: 1024px) {
     .main-grid {
         grid-template-columns: 1fr;
         gap: 30px;
+        margin-top: 30px;
     }
 
     .cards-grid {
@@ -96,13 +99,22 @@ const goToAllNews = () => {
     }
 }
 
-@media (max-width: 600px) {
+/* Mobile (até 640px) */
+@media (max-width: 640px) {
+    .main-grid {
+        gap: 24px;
+        margin-top: 20px;
+    }
+
     .cards-grid {
         grid-template-columns: 1fr;
+        gap: 20px;
     }
 
     .section-title {
         font-size: 1.5rem;
+        padding-left: 12px;
+        border-left-width: 3px;
     }
 }
 </style>

@@ -16,13 +16,15 @@ const fetchEvents = async () => {
     try {
         const response = await fetch('/api/events?page=1');
         const data = await response.json();
-        nextGigs.value = data.data.map(event => ({
-            id: event.id,
-            band: event.title, 
-            loc: event.location,
-            img: event.image_url,
-            date: formatDateStyle(event.event_date)
-        }));
+        if (data.data) {
+            nextGigs.value = data.data.slice(0, 15).map(event => ({
+                id: event.id,
+                band: event.title,
+                loc: event.location,
+                img: event.image_url,
+                date: formatDateStyle(event.date || event.event_date)
+            }));
+        }
     } catch (error) {
         console.error('Erro ao buscar agenda:', error);
     }
@@ -32,7 +34,6 @@ const fetchAds = async () => {
     try {
         const response = await fetch('/api/ads');
         const data = await response.json();
-        
         ads.value = data.map(ad => ({
             id: ad.id,
             title: ad.title,
@@ -51,46 +52,49 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="sidebar-container">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-col gap-8 h-full">
 
         <div class="sidebar-block">
             <h3 class="sidebar-title">Agenda</h3>
-            <div class="agenda-list">
-                <div v-for="gig in nextGigs" :key="gig.id" class="agenda-item group">
+            <div class="agenda-list flex flex-col gap-2">
+                <div v-for="(gig, index) in nextGigs" :key="gig.id" class="agenda-item group"
+                    :class="index >= 5 ? 'hidden lg:flex' : 'flex'">
                     <img :src="gig.img" class="agenda-img" />
                     <div>
                         <div class="date">{{ gig.date }}</div>
-                        <div class="band group-hover:text-white">{{ gig.band }}</div>
-                        <div class="loc">{{ gig.loc }}</div>
+                        <div class="band group-hover:text-white line-clamp-1">{{ gig.band }}</div>
+                        <div class="loc line-clamp-1">{{ gig.loc }}</div>
                     </div>
                 </div>
             </div>
             <router-link to="/agenda">
-                <Button label="Ver tudo" link class="w-full mt-2 text-xs text-gray-500" />
+                <Button label="Ver tudo" link class="w-full mt-2 text-xs text-gray-500 hover:text-purple-400" />
             </router-link>
         </div>
-        <div class="sidebar-block">
-            <span class="ad-label">Patrocinado</span>
-
-            <div class="flex flex-col gap-4">
-                <a v-for="ad in ads" :key="ad.id" :href="ad.link" target="_blank" :title="`Acessar o site ${ad.title}`"
-                    class="ad-item block relative group rounded-lg overflow-hidden h-[120px] transition-all cursor-pointer">
-                    <img :src="ad.image" :alt="ad.title"
-                        class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100" />
-                </a>
+        <div class="flex flex-col gap-8">
+            <div class="sidebar-block">
+                <span class="ad-label">Patrocinado</span>
+                <div class="flex flex-col gap-4">
+                    <a v-for="ad in ads" :key="ad.id" :href="ad.link" target="_blank"
+                        class="ad-item block relative group rounded-lg overflow-hidden h-[120px] transition-all cursor-pointer border border-gray-800 hover:border-purple-500">
+                        <img :src="ad.image" :alt="ad.title"
+                            class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100" />
+                    </a>
+                </div>
             </div>
-        </div>
-        <div class="newsletter-block">
-            <div class="newsletter-box">
-                <h4 class="text-white font-bold mb-2 flex items-center gap-3">
-                    <i class="pi pi-envelope text-purple-500 text-lg mr-2"></i>
-                    <span>Newsletter</span>
-                </h4>
-
-                <p class="text-xs text-gray-400 mb-3">Receba as novidades.</p>
-                <div class="flex gap-2">
-                    <input type="email" placeholder="Email..." class="newsletter-input" />
-                    <button class="newsletter-btn"><i class="pi pi-send"></i></button>
+            <div class="newsletter-block">
+                <div class="newsletter-box">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-3">
+                        <i class="pi pi-envelope text-purple-500 text-lg"></i>
+                        <span>Newsletter</span>
+                    </h4>
+                    <p class="text-xs text-gray-400 mb-3">Receba as novidades do underground.</p>
+                    <div class="flex gap-2">
+                        <input type="email" placeholder="Email..." class="newsletter-input" />
+                        <button class="newsletter-btn hover:bg-purple-600 transition-colors">
+                            <i class="pi pi-send"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -99,32 +103,26 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.sidebar-container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    gap: 3rem;
-}
-
 .sidebar-title {
     font-family: 'Michroma', cursive;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     color: white;
     border-bottom: 1px solid #333;
     margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
 }
 
 .agenda-item {
-    display: flex;
     gap: 0.75rem;
     padding: 0.5rem;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
     transition: background 0.2s;
+    background: rgba(255, 255, 255, 0.02);
 }
 
 .agenda-item:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(168, 85, 247, 0.1);
 }
 
 .agenda-img {
@@ -132,7 +130,6 @@ onMounted(() => {
     height: 3rem;
     border-radius: 4px;
     object-fit: cover;
-    opacity: 0.7;
 }
 
 .date {
@@ -159,11 +156,12 @@ onMounted(() => {
     color: #666;
     text-transform: uppercase;
     margin-bottom: 0.5rem;
+    letter-spacing: 1px;
 }
 
 .newsletter-box {
-    background: linear-gradient(to bottom, #111, #000);
-    border: 1px solid #222;
+    background: linear-gradient(180deg, #1a1a1a 0%, #000000 100%);
+    border: 1px solid #333;
     border-radius: 8px;
     padding: 1.25rem;
 }
@@ -175,6 +173,12 @@ onMounted(() => {
     padding: 0.5rem;
     color: white;
     border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.newsletter-input:focus {
+    border-color: #a855f7;
+    outline: none;
 }
 
 .newsletter-btn {
@@ -184,10 +188,5 @@ onMounted(() => {
     border-radius: 4px;
     border: none;
     cursor: pointer;
-}
-
-.ad-item {
-    border-radius: 4px;
-    margin: 5px 0;
 }
 </style>
