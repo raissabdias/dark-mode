@@ -124,7 +124,7 @@ const scrollToTop = () => {
                 </div>
             </article>
             <CommentsSection v-if="news" :news-slug="newsSlug" />
-            <div v-else class="text-center py-10 text-red-500">
+            <div v-if="!news && !loading" class="text-center py-10 text-red-500">
                 Notícia não encontrada.
             </div>
         </div>

@@ -48,11 +48,20 @@ Route::get('/news-paginated', function (Request $request) {
     return $query->paginate(9);
 });
 
-Route::get('/events', function () {
-    return \App\Models\Event::query()
-        ->where('event_date', '>=', now())
-        ->orderBy('event_date', 'asc')
-        ->paginate(10);
+Route::get('/events', function (Request $request) {
+    $query = Event::query();
+    if ($request->filled('year')) {
+        $query->whereYear('event_date', $request->year);
+    }
+
+    if ($request->filled('month')) {
+        $query->whereMonth('event_date', $request->month);
+    }
+
+    $query->orderBy('event_date', 'asc');
+    $perPage = $request->input('per_page', 10);
+
+    return $query->paginate($perPage);
 });
 
 Route::get('/ads', function () {
