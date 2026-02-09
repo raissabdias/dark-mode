@@ -83,22 +83,30 @@ onMounted(() => {
                 </div>
             </div>
             <div class="newsletter-block">
-                <div class="newsletter-box">
+                <div class="newsletter-box group">
                     <h4 class="text-white font-bold mb-2 flex items-center gap-3">
-                        <i class="pi pi-envelope text-purple-500 text-lg"></i>
-                        <span>Newsletter</span>
+                        <i class="pi pi-whatsapp text-green-500 text-xl"></i>
+                        <span>Comunidade VIP</span>
                     </h4>
-                    <p class="text-xs text-gray-400 mb-3">Receba as novidades do underground.</p>
-                    <div class="flex gap-2">
-                        <input type="email" placeholder="Email..." class="newsletter-input" />
-                        <button class="newsletter-btn hover:bg-purple-600 transition-colors">
-                            <i class="pi pi-send"></i>
-                        </button>
-                    </div>
+                    <p class="text-xs text-gray-400 mb-4 leading-relaxed">
+                        Fique por dentro dos shows e novidades do underground em primeira mão.
+                    </p>
+                    <a href="https://chat.whatsapp.com/SEU_CODIGO_DO_GRUPO_AQUI" 
+                       target="_blank"
+                       class="flex items-center justify-center gap-2 w-full 
+                              bg-green-600 hover:bg-green-500 text-white font-bold 
+                              py-3 rounded-full transition-all transform group-hover:scale-105 shadow-lg shadow-green-900/20">
+                        <i class="pi pi-whatsapp text-lg"></i>
+                        Entrar no Grupo
+                    </a>
                 </div>
             </div>
+            <div class="logo-block hidden md:block">
+                <router-link to="/">
+                    <img src="/images/logo-red.png" alt="Logo do site" class="w-45 mx-auto" />
+                </router-link>
+            </div>
         </div>
-
     </div>
 </template>
 
