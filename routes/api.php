@@ -5,6 +5,7 @@ use App\Models\Event;
 use App\Models\News;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Api\CommentController;
 
 Route::get('/news', function () {
     return News::where('is_active', true)
@@ -61,11 +62,6 @@ Route::get('/ads', function () {
         ->get();
 });
 
-Route::get('/instalar-config-livewire', function () {
-    \Illuminate\Support\Facades\Artisan::call('vendor:publish', [
-        '--tag' => 'livewire:config',
-        '--force' => true
-    ]);
-    
-    return '<h1>Configuração do Livewire publicada</h1>';
-});
+Route::get('/news/{slug}/comments', [CommentController::class, 'index']);
+
+Route::post('/news/{slug}/comments', [CommentController::class, 'store']);

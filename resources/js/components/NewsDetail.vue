@@ -1,8 +1,9 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-// 1. Importar o Sidebar
+
 import Sidebar from './Sidebar.vue';
+import CommentsSection from './CommentsSection.vue';
 
 const props = defineProps({
     newsId: {
@@ -104,7 +105,7 @@ const scrollToTop = () => {
                                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                             </svg>
                             por <span class="text-purple-400 font-semibold">{{ getAuthorName(news.author || news.user)
-                            }}</span>
+                                }}</span>
                         </span>
                     </div>
                     <h1
@@ -122,6 +123,7 @@ const scrollToTop = () => {
                     </div>
                 </div>
             </article>
+            <CommentsSection v-if="news" :news-slug="newsSlug" />
             <div v-else class="text-center py-10 text-red-500">
                 Notícia não encontrada.
             </div>
@@ -129,7 +131,6 @@ const scrollToTop = () => {
         <aside class="w-full lg:w-1/4">
             <Sidebar />
         </aside>
-
     </div>
 </template>
 

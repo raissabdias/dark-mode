@@ -19,7 +19,7 @@ class News extends Model
         'content',
         'image',
         'published_at',
-        'is_active', 
+        'is_active',
         'is_featured'
     ];
 
@@ -40,9 +40,14 @@ class News extends Model
     {
         return $this->published_at ? $this->published_at->format('d/m/y') : null;
     }
-    
+
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->where('is_approved', true)->latest();
     }
 }
