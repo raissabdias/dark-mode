@@ -54,13 +54,21 @@ const cleanedContent = computed(() => {
     txt.innerHTML = rawContent;
     return txt.value;
 });
+
+const scrollToTop = () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+};
 </script>
 
 <template>
     <div class="flex flex-col lg:flex-row gap-8 py-8 animate-fade-in">
         <div class="w-full lg:w-3/4">
-            <button @click="goBack" class="mb-6 flex items-center gap-2 transition-colors cursor-pointer back-home">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <button @click="goBack"
+                class="inline-flex items-center justify-center px-6 py-1 mb-4 font-bold text-white transition-all duration-200 bg-transparent border-2 border-purple-600 rounded-full hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-600 cursor-pointer back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
                         d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
                         clip-rule="evenodd" />
@@ -105,6 +113,13 @@ const cleanedContent = computed(() => {
                     </h1>
                     <div class="prose prose-lg max-w-none dark:prose-invert text-gray-700 dark:text-gray-300 leading-relaxed video-container"
                         v-html="cleanedContent"></div>
+                    <div class="flex justify-center border-t border-gray-800 pt-8">
+                        <button @click="scrollToTop"
+                            class="group flex items-center gap-2 px-6 py-3 bg-gray-900 hover:bg-purple-600 border border-gray-700 hover:border-purple-500 text-gray-300 hover:text-white rounded-full transition-all duration-300 font-bold shadow-lg hover:shadow-purple-500/25 cursor-pointer">
+                            <i class="pi pi-arrow-up group-hover:-translate-y-1 transition-transform duration-300"></i>
+                            Voltar para o Topo
+                        </button>
+                    </div>
                 </div>
             </article>
             <div v-else class="text-center py-10 text-red-500">
@@ -125,15 +140,6 @@ const cleanedContent = computed(() => {
 
 .animate-fade-in {
     animation: fadeIn 0.3s ease-in-out;
-}
-
-.back-home {
-    color: #a855f7;
-    font-weight: 600;
-}
-
-.back-home:hover {
-    color: #d8b4fe;
 }
 
 @keyframes fadeIn {

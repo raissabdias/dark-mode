@@ -49,7 +49,7 @@ const goToAllNews = () => {
                 </div>
                 <div class="flex justify-center w-full">
                     <button @click="goToAllNews"
-                        class="group relative inline-flex items-center justify-center px-8 py-3 font-bold text-white transition-all duration-200 bg-transparent border-2 border-purple-600 rounded-full hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-600">
+                        class="group relative inline-flex items-center justify-center px-8 py-3 font-bold text-white transition-all duration-200 bg-transparent border-2 border-purple-600 rounded-full hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-600 cursor-pointer">
                         <span>Carregar mais notícias</span>
                         <i class="pi pi-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
                     </button>

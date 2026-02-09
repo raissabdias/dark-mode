@@ -30,7 +30,7 @@ Route::get('/news/{slug}', function ($slug) {
 });
 
 Route::get('/news-paginated', function (Request $request) {
-    $query = News::with('category')->latest();
+    $query = News::with('category');
     if ($request->has('categories') && $request->categories) {
         $categoryIds = explode(',', $request->categories);
         
@@ -43,6 +43,7 @@ Route::get('/news-paginated', function (Request $request) {
         });
     }
 
+    $query->orderBy('published_at', 'desc');
     return $query->paginate(9);
 });
 
