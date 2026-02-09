@@ -103,7 +103,7 @@ onMounted(() => {
             </div>
             <div class="logo-block hidden md:block">
                 <router-link to="/">
-                    <img src="/images/logo-red.png" alt="Logo do site" class="w-45 mx-auto" />
+                    <img src="/images/logo-red.png" alt="Logo do site" class="w-45 mx-auto opacity-80" />
                 </router-link>
             </div>
         </div>
