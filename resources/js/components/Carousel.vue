@@ -17,7 +17,9 @@ const isSingleItem = computed(() => highlights.value.length === 1);
 
 const fetchFeatured = async () => {
     try {
-        const response = await fetch('/api/news/featured');
+        const isMobile = window.innerWidth < 768;
+        const limit = isMobile ? 8 : 15;
+        const response = await fetch(`/api/news/featured?limit=${limit}`);
         highlights.value = await response.json();
     } catch (error) {
         console.error('Erro ao carregar destaques:', error);
@@ -55,7 +57,7 @@ onMounted(() => {
                 <div class="hero-slide h-[450px] md:h-[550px]">
                     <img :src="slotProps.data.image_url" :alt="slotProps.data.title" class="hero-image" />
                     <div class="overlay"></div>
-                    <div class="hero-content p-5 md:p-16 w-full">
+                    <div class="hero-content p-5 md:p-16 md:pb-10 w-full">
                         <Tag v-if="slotProps.data.category" :style="{
                             backgroundColor: slotProps.data.category.bg_color,
                             color: slotProps.data.category.text_color

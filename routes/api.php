@@ -15,12 +15,13 @@ Route::get('/news', function () {
         ->get();
 });
 
-Route::get('/news/featured', function () {
+Route::get('/news/featured', function (Request $request) {
+    $limit = $request->input('limit', 15);
     return \App\Models\News::where('is_active', true)
         ->where('is_featured', true)
         ->with(['category'])
         ->orderBy('published_at', 'desc')
-        ->take(3)
+        ->take($limit)
         ->get();
 });
 
@@ -62,6 +63,13 @@ Route::get('/events', function (Request $request) {
     $perPage = $request->input('per_page', 10);
 
     return $query->paginate($perPage);
+});
+
+Route::get('/events/comming', function () {
+    return Event::whereDate('event_date', '>=', now())
+        ->orderBy('event_date', 'asc')
+        ->take(10)
+        ->get();
 });
 
 Route::get('/ads', function () {

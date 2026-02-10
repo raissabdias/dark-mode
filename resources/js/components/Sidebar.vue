@@ -14,10 +14,10 @@ const formatDateStyle = (dateString) => {
 
 const fetchEvents = async () => {
     try {
-        const response = await fetch('/api/events?page=1');
+        const response = await fetch('/api/events/comming');
         const data = await response.json();
-        if (data.data) {
-            nextGigs.value = data.data.slice(0, 15).map(event => ({
+        if (data) {
+            nextGigs.value = data.slice(0, 15).map(event => ({
                 id: event.id,
                 band: event.title,
                 loc: event.location,
