@@ -25,7 +25,7 @@ const fetchEvents = async () => {
                 date: formatDateStyle(event.date || event.event_date)
             }));
         }
-    } catch (error) {
+    } catch (error) { 
         console.error('Erro ao buscar agenda:', error);
     }
 };

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import Sidebar from './Sidebar.vue';
@@ -17,9 +17,10 @@ const router = useRouter();
 
 const news = ref(null);
 const loading = ref(true);
-const newsSlug = route.params.slug || props.newsSlug;
 
-onMounted(async () => {
+const fetchNews = async () => {
+    const newsSlug = route.params.slug || props.newsSlug;
+    loading.value = true;
     try {
         const response = await fetch(`/api/news/${newsSlug}`);
         if (!response.ok) throw new Error('Falha ao buscar notícia');
@@ -29,6 +30,17 @@ onMounted(async () => {
         console.error(error);
     } finally {
         loading.value = false;
+    }
+};
+
+onMounted(() => {
+    fetchNews();
+});
+
+watch(() => route.params.slug, (newSlug, oldSlug) => {
+    if (newSlug && newSlug !== oldSlug) {
+        fetchNews();
+        scrollToTop();
     }
 });
 

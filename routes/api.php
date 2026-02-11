@@ -79,6 +79,26 @@ Route::get('/ads', function () {
         ->get();
 });
 
+Route::get('/news/search/query', function (Request $request) {
+    $query = $request->input('q');
+    
+    if (empty($query) || strlen($query) < 2) {
+        return [];
+    }
+    
+    $searchTerm = strtolower($query);
+    
+    return News::where('is_active', true)
+        ->where(function($q) use ($searchTerm) {
+            $q->whereRaw('LOWER(title) LIKE ?', ["%{$searchTerm}%"])
+              ->orWhereRaw('LOWER(excerpt) LIKE ?', ["%{$searchTerm}%"]);
+        })
+        ->with(['category'])
+        ->orderBy('published_at', 'desc')
+        ->take(8)
+        ->get();
+});
+
 Route::get('/news/{slug}/comments', [CommentController::class, 'index']);
 
 Route::post('/news/{slug}/comments', [CommentController::class, 'store']);
