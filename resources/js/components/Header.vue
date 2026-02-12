@@ -117,7 +117,7 @@ const selectNews = (event) => {
                         </template>
                         <template #empty>
                             <div class="p-4 text-center text-gray-400">
-                                Nenhuma notícia encontrada
+                                {{ searchLoading ? 'Carregando notícias...' : 'Nenhuma notícia encontrada' }}
                             </div>
                         </template>
                     </AutoComplete>
@@ -187,7 +187,7 @@ const selectNews = (event) => {
                             </template>
                             <template #empty>
                                 <div class="p-4 text-center text-gray-400">
-                                    Nenhuma notícia encontrada
+                                    {{ searchLoading ? 'Carregando notícias...' : 'Nenhuma notícia encontrada' }}
                                 </div>
                             </template>
                         </AutoComplete>
