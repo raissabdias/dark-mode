@@ -107,8 +107,8 @@ onMounted(() => {
                 <SocialIcons variant="menu" />
             </div>
             <div class="logo-block hidden md:block">
-                <router-link to="/">
-                    <img src="/images/logo-red.png" alt="Logo do site" class="w-40 mx-auto opacity-80" />
+                <router-link to="/" class="logo-link">
+                    <img src="/images/logo-red.png" alt="Logo do site" class="logo-image w-40 mx-auto opacity-80" />
                 </router-link>
             </div>
         </div>
@@ -201,5 +201,20 @@ onMounted(() => {
     border-radius: 4px;
     border: none;
     cursor: pointer;
+}
+
+.logo-link {
+    display: block;
+}
+
+.logo-image {
+    transition: transform 0.35s ease, opacity 0.35s ease, filter 0.35s ease;
+    transform: translateY(0) scale(1);
+}
+
+.logo-link:hover .logo-image {
+    transform: translateY(-4px) scale(1.06);
+    opacity: 1;
+    filter: drop-shadow(0 8px 16px rgba(168, 85, 247, 0.25));
 }
 </style>
