@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { useRouter } from 'vue-router';
 import Menubar from 'primevue/menubar';
 import AutoComplete from 'primevue/autocomplete';
+import SocialIcons from './SocialIcons.vue';
 
 const router = useRouter();
 
@@ -123,12 +124,7 @@ const selectNews = (event) => {
                 </div>
                 <div v-if="item.key === 'social-mobile'"
                     class="flex items-center justify-center gap-6 py-6 border-t border-white/10 mt-2 bg-black/50">
-                    <a href="https://www.instagram.com/dark_mode_magazine"
-                        class="text-gray-400 text-3xl hover:text-purple-500 hover:scale-110 transition-transform"><i
-                            class="pi pi-instagram"></i></a>
-                    <a href="https://www.youtube.com/@darkmode-revistadigital"
-                        class="text-gray-400 text-3xl hover:text-purple-500 hover:scale-110 transition-transform"><i
-                            class="pi pi-youtube"></i></a>
+                    <SocialIcons variant="menu" />
                 </div>
                 <router-link v-else :to="item.route" custom v-slot="{ href, navigate, isActive }">
                     <a :href="href" @click="navigate" class="flex items-center group w-full" v-bind="props.action"
@@ -172,8 +168,10 @@ const selectNews = (event) => {
                                         <i class="pi pi-image text-gray-600 text-2xl"></i>
                                     </div>
                                     <div class="flex-1 min-w-0 overflow-hidden">
-                                        <div class="text-white font-semibold text-sm mb-1 break-words whitespace-normal">{{
-                                            slotProps.option.title }}</div>
+                                        <div
+                                            class="text-white font-semibold text-sm mb-1 break-words whitespace-normal">
+                                            {{
+                                                slotProps.option.title }}</div>
                                         <div class="flex items-center gap-2 text-xs">
                                             <span v-if="slotProps.option.category"
                                                 class="px-2 py-1 rounded text-xs font-bold" :style="{
@@ -196,12 +194,7 @@ const selectNews = (event) => {
                     </div>
 
                     <!-- Social Icons -->
-                    <a href="https://www.instagram.com/dark_mode_magazine"
-                        class="text-gray-400 text-2xl hover:text-purple-500 hover:-translate-y-1 transition-all"><i
-                            class="pi pi-instagram"></i></a>
-                    <a href="https://www.youtube.com/@darkmode-revistadigital"
-                        class="text-gray-400 text-2xl hover:text-purple-500 hover:-translate-y-1 transition-all"><i
-                            class="pi pi-youtube"></i></a>
+                    <SocialIcons variant="compact" />
                 </div>
             </template>
         </Menubar>
@@ -209,6 +202,8 @@ const selectNews = (event) => {
 </template>
 
 <style scoped>
+@reference "../../css/app.css";
+
 .icon-link:hover {
     text-shadow: 0 0 12px rgba(168, 85, 247, 0.5);
 }
@@ -253,6 +248,34 @@ const selectNews = (event) => {
     :deep(.p-menubar-item:not(.p-disabled) > .p-menubar-item-content:hover) {
         color: inherit !important;
         background: transparent !important;
+    }
+}
+
+.nav-link {
+    @apply text-gray-300 hover:text-purple-500 font-medium transition-colors duration-200 text-sm uppercase tracking-wider;
+}
+
+.nav-link.active {
+    @apply text-purple-500 font-bold;
+}
+
+.mobile-nav-link {
+    @apply block px-3 py-4 text-base font-medium text-gray-300 hover:text-purple-500 hover:bg-gray-900 rounded-md transition-all;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 </style>

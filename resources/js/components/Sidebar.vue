@@ -1,4 +1,6 @@
 <script setup>
+import SocialIcons from './SocialIcons.vue';
+
 import { ref, onMounted } from 'vue';
 import Button from 'primevue/button';
 
@@ -17,7 +19,7 @@ const fetchEvents = async () => {
         const response = await fetch('/api/events/comming');
         const data = await response.json();
         if (data) {
-            nextGigs.value = data.slice(0, 15).map(event => ({
+            nextGigs.value = data.slice(0, 8).map(event => ({
                 id: event.id,
                 band: event.title,
                 loc: event.location,
@@ -102,8 +104,11 @@ onMounted(() => {
                 </div>
             </div>
             <div class="logo-block hidden md:block">
+                <SocialIcons variant="menu" />
+            </div>
+            <div class="logo-block hidden md:block">
                 <router-link to="/">
-                    <img src="/images/logo-red.png" alt="Logo do site" class="w-45 mx-auto opacity-80" />
+                    <img src="/images/logo-red.png" alt="Logo do site" class="w-40 mx-auto opacity-80" />
                 </router-link>
             </div>
         </div>
