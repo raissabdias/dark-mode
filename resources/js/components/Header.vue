@@ -124,10 +124,10 @@ const selectNews = (event) => {
                 <div v-if="item.key === 'social-mobile'"
                     class="flex items-center justify-center gap-6 py-6 border-t border-white/10 mt-2 bg-black/50">
                     <a href="https://www.instagram.com/dark_mode_magazine"
-                        class="text-gray-400 text-2xl hover:text-purple-500 hover:scale-110 transition-transform"><i
+                        class="text-gray-400 text-3xl hover:text-purple-500 hover:scale-110 transition-transform"><i
                             class="pi pi-instagram"></i></a>
                     <a href="https://www.youtube.com/@darkmode-revistadigital"
-                        class="text-gray-400 text-2xl hover:text-purple-500 hover:scale-110 transition-transform"><i
+                        class="text-gray-400 text-3xl hover:text-purple-500 hover:scale-110 transition-transform"><i
                             class="pi pi-youtube"></i></a>
                 </div>
                 <router-link v-else :to="item.route" custom v-slot="{ href, navigate, isActive }">
@@ -197,10 +197,10 @@ const selectNews = (event) => {
 
                     <!-- Social Icons -->
                     <a href="https://www.instagram.com/dark_mode_magazine"
-                        class="text-gray-400 text-lg hover:text-purple-500 hover:-translate-y-1 transition-all"><i
+                        class="text-gray-400 text-2xl hover:text-purple-500 hover:-translate-y-1 transition-all"><i
                             class="pi pi-instagram"></i></a>
                     <a href="https://www.youtube.com/@darkmode-revistadigital"
-                        class="text-gray-400 text-lg hover:text-purple-500 hover:-translate-y-1 transition-all"><i
+                        class="text-gray-400 text-2xl hover:text-purple-500 hover:-translate-y-1 transition-all"><i
                             class="pi pi-youtube"></i></a>
                 </div>
             </template>

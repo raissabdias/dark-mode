@@ -3,7 +3,7 @@ defineProps({ post: Object });
 </script>
 
 <template>
-    <div class="news-card group">
+    <div @click="$emit('open-news', post.slug)" class="news-card group cursor-pointer">
         <div class="image-wrapper">
             <img :src="post.image_url" :alt="post.title" />
             <span v-if="post.category" class="category-badge"
@@ -19,8 +19,7 @@ defineProps({ post: Object });
             </div>
             <h3 class="title group-hover:text-purple-400 transition-colors">{{ post.title }}</h3>
             <p class="excerpt">{{ post.excerpt }}</p>
-            <div @click="$emit('open-news', post.slug)"
-                class="flex items-center font-semibold text-sm mt-auto cursor-pointer read-more">
+            <div class="flex items-center font-semibold text-sm mt-auto read-more">
                 Ler Matéria <i class="pi pi-arrow-right ml-1 group-hover:translate-x-1 transition-transform"></i>
             </div>
         </div>
