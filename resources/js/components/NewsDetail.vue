@@ -6,9 +6,9 @@ import Sidebar from './Sidebar.vue';
 import CommentsSection from './CommentsSection.vue';
 
 const props = defineProps({
-    newsId: {
-        type: Number,
-        required: true
+    newsSlug: {
+        type: String,
+        default: ''
     }
 });
 
@@ -17,12 +17,18 @@ const router = useRouter();
 
 const news = ref(null);
 const loading = ref(true);
+const newsSlug = computed(() => route.params.slug || props.newsSlug || '');
 
 const fetchNews = async () => {
-    const newsSlug = route.params.slug || props.newsSlug;
+    if (!newsSlug.value) {
+        news.value = null;
+        loading.value = false;
+        return;
+    }
+
     loading.value = true;
     try {
-        const response = await fetch(`/api/news/${newsSlug}`);
+        const response = await fetch(`/api/news/${newsSlug.value}`);
         if (!response.ok) throw new Error('Falha ao buscar notícia');
         news.value = await response.json();
         document.title = `${news.value.title} | Dark Mode`;

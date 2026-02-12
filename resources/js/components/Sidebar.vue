@@ -91,7 +91,7 @@ onMounted(() => {
                     <p class="text-xs text-gray-400 mb-4 leading-relaxed">
                         Fique por dentro dos shows e novidades do underground em primeira mão.
                     </p>
-                    <a href="https://chat.whatsapp.com/SEU_CODIGO_DO_GRUPO_AQUI" 
+                    <a href="https://chat.whatsapp.com/F0Pw6ClCkl3ATvaWnfdRlB?mode=gi_t" 
                        target="_blank"
                        class="flex items-center justify-center gap-2 w-full 
                               bg-green-600 hover:bg-green-500 text-white font-bold 
