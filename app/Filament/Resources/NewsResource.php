@@ -78,6 +78,9 @@ class NewsResource extends Resource
 
                         Forms\Components\RichEditor::make('content')
                             ->label('Conteúdo Completo')
+                            ->fileAttachmentsDisk('supabase')
+                            ->fileAttachmentsDirectory('news-content')
+                            ->fileAttachmentsVisibility('public')
                             ->columnSpanFull()
                             ->required(),
                     ])->columns(2),
