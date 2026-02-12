@@ -10,6 +10,8 @@
     <meta property="og:title" content="{{ $meta['title'] ?? 'Dark Mode' }}">
     <meta property="og:description" content="{{ $meta['description'] ?? '' }}">
     <meta property="og:image" content="{{ $meta['image'] ?? asset('images/background.jpg') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="{{ $meta['url'] ?? url()->current() }}">
