@@ -82,7 +82,11 @@ class NewsResource extends Resource
                             ->fileAttachmentsDirectory('news-content')
                             ->fileAttachmentsVisibility('public')
                             ->columnSpanFull()
-                            ->required(),
+                            ->required()
+                            ->extraInputAttributes([
+                                'style' => 'max-height: 500px; overflow-y: auto;',
+                            ])
+                            ->columnSpanFull(),
                     ])->columns(2),
 
                 // Card Lateral (Imagem e Status)

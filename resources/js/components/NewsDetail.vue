@@ -254,4 +254,15 @@ const copyToClipboard = () => {
     color: #facc15;
     border-color: #facc15;
 }
+
+:deep(.prose blockquote),
+:deep(.body-text blockquote) {
+    @apply border-l-4 border-purple-600 pl-6 my-8 text-gray-400 bg-gray-900/30 py-4 rounded-r-lg;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+:deep(.prose blockquote p) {
+    @apply mb-0;
+}
 </style>
