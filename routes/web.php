@@ -29,28 +29,34 @@ Route::get('/pgnews/{slug}', function ($slug) {
  */
 Route::get('/{any?}', function ($any = null) {
     $meta = [
-        'title' => 'Dark Mode | Portal Underground',
+        'title'       => 'Dark Mode | Portal Underground',
         'description' => 'Acompanhe os melhores shows e as últimas novidades da cena underground.',
         'image'       => asset('images/og.jpg'),
-        'url'         => url('/'),
+        'url'         => url()->current(),
     ];
 
-    
-    if (Str::startsWith($any, 'noticia/')) {
-        $slug = Str::after($any, 'noticia/');
-        $news = News::where('slug', $slug)->first(); 
-        
+    $path = request()->path();
+    if (Str::startsWith($path, 'noticia/')) {
+        $slug = Str::after($path, 'noticia/');
+        $news = \App\Models\News::where('slug', $slug)->first();
+
         if ($news) {
             $meta['title'] = $news->title . ' | Dark Mode';
             $meta['description'] = Str::limit(strip_tags($news->excerpt ?? $news->content), 160);
-            $meta['image'] = $news->image_url ?? $meta['image'];
+
+            // Força a imagem a ser uma URL absoluta
+            if ($news->image_url) {
+                $meta['image'] = Str::startsWith($news->image_url, 'http')
+                    ? $news->image_url
+                    : asset('storage/' . $news->image_url);
+            }
         }
     }
-    
+
     if (Str::startsWith($any, 'evento/')) {
         $id = Str::after($any, 'evento/');
         $event = Event::find($id);
-        
+
         if ($event) {
             $meta['title'] = $event->title . ' | Agenda Dark Mode';
             $meta['description'] = 'Evento em ' . $event->location . ' no dia ' . date('d/m', strtotime($event->date));
@@ -64,7 +70,7 @@ Route::get('/{any?}', function ($any = null) {
 /**
  * Rota para limpar todos os caches do Laravel (configurações, rotas, views, etc.) para garantir que as mudanças sejam refletidas imediatamente
  */
-Route::get('/limpar-cache', function() {
+Route::get('/limpar-cache', function () {
     Artisan::call('optimize:clear');
     Artisan::call('route:clear');
     Artisan::call('config:clear');

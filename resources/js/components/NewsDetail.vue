@@ -53,6 +53,11 @@ watch(() => route.params.slug, (newSlug, oldSlug) => {
 });
 
 const goBack = () => {
+    if (window.history.length > 1) {
+        router.back();
+        return;
+    }
+
     router.push('/');
 };
 
@@ -93,16 +98,6 @@ const copyToClipboard = () => {
 <template>
     <div class="flex flex-col lg:flex-row gap-8 py-4 md:py-8 animate-fade-in">
         <div class="w-full lg:w-3/4">
-            <button @click="goBack"
-                class="inline-flex items-center justify-center px-6 py-1 mb-4 font-bold text-white transition-all duration-200 bg-transparent border-2 border-purple-600 rounded-full hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-600 cursor-pointer back-home text-sm md:text-base">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5 mr-2" viewBox="0 0 20 20"
-                    fill="currentColor">
-                    <path fill-rule="evenodd"
-                        d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
-                        clip-rule="evenodd" />
-                </svg>
-                Voltar para Home
-            </button>
             <div v-if="loading" class="flex justify-center py-20">
                 <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
             </div>
@@ -159,14 +154,27 @@ const copyToClipboard = () => {
                         </div>
                     </div>
                     <div class="flex justify-center border-t border-gray-800 pt-8">
-                        <button @click="scrollToTop"
+                        <button @click="goBack"
                             class="group flex items-center gap-2 px-8 py-3 bg-gray-900 hover:bg-purple-600 border border-gray-700 hover:border-purple-500 text-gray-300 hover:text-white rounded-full transition-all duration-300 font-bold shadow-lg w-full md:w-auto justify-center cursor-pointer">
-                            <i class="pi pi-arrow-up group-hover:-translate-y-1 transition-transform duration-300"></i>
-                            Voltar para o Topo
+                            <i class="pi pi-arrow-left group-hover:-translate-y-1 transition-transform duration-300"></i>
+                            Voltar para página anterior
                         </button>
                     </div>
                 </div>
             </article>
+            <div v-else class="text-center py-20">
+                <p class="text-gray-500 text-lg">Notícia não encontrada.</p>
+                <button @click="goBack"
+                    class="inline-flex items-center justify-center px-6 py-1 my-4 font-bold text-white transition-all duration-200 bg-transparent border-2 border-purple-600 rounded-full hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-600 cursor-pointer back-home text-sm md:text-base">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5 mr-2" viewBox="0 0 20 20"
+                        fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    Voltar para página anterior
+                </button>
+            </div>
             <CommentsSection v-if="news" :news-slug="newsSlug" />
         </div>
         <aside class="w-full lg:w-1/4">

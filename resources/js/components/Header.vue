@@ -74,7 +74,7 @@ const selectNews = (event) => {
             </template>
             <template #item="{ item, props }">
                 <!-- Search Bar Mobile -->
-                <div v-if="item.key === 'search-mobile'" class="px-4 py-3 relative" @click.stop @keydown.stop>
+                <div v-if="item.key === 'search-mobile'" class="mobile-search px-4 py-3 relative" @click.stop @keydown.stop>
                     <i class="pi pi-search absolute left-7 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
                         style="z-index: 999;"></i>
                     <AutoComplete v-model="searchQuery" :suggestions="searchResults" @complete="searchNews"
@@ -83,7 +83,7 @@ const selectNews = (event) => {
                             root: { class: 'w-full !relative', style: 'position: relative; z-index: 1' },
                             pcInputText: {
                                 class: 'w-full text-white placeholder:text-gray-500 rounded-full pl-10 pr-4 py-2 !border-0 focus:!border-0 focus:!outline-none focus:ring-2 focus:ring-purple-500/50',
-                                style: 'background-color: #000 !important; position: relative; z-index: 1'
+                                style: 'background-color: rgba(107, 114, 128, 0.35) !important; position: relative; z-index: 1'
                             },
                             overlay: {
                                 class: 'bg-gray-900/95 backdrop-blur-md border border-white/10 rounded-lg shadow-2xl mt-2 overflow-hidden'
@@ -249,18 +249,17 @@ const selectNews = (event) => {
         color: inherit !important;
         background: transparent !important;
     }
-}
 
-.nav-link {
-    @apply text-gray-300 hover:text-purple-500 font-medium transition-colors duration-200 text-sm uppercase tracking-wider;
-}
-
-.nav-link.active {
-    @apply text-purple-500 font-bold;
-}
-
-.mobile-nav-link {
-    @apply block px-3 py-4 text-base font-medium text-gray-300 hover:text-purple-500 hover:bg-gray-900 rounded-md transition-all;
+    .mobile-search :deep(.p-autocomplete input),
+    .mobile-search :deep(.p-autocomplete .p-autocomplete-input),
+    .mobile-search :deep(.p-inputtext),
+    .mobile-search :deep(.p-autocomplete input:focus),
+    .mobile-search :deep(.p-autocomplete .p-autocomplete-input:focus),
+    .mobile-search :deep(.p-inputtext:focus),
+    .mobile-search :deep(.p-autocomplete input:hover),
+    .mobile-search :deep(.p-inputtext:hover) {
+        background-color: rgba(107, 114, 128, 0.199) !important;
+    }
 }
 
 .animate-fade-in {
