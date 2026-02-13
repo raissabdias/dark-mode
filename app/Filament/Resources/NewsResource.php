@@ -11,13 +11,14 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
+use FilamentTiptapEditor\TiptapEditor;
 
 class NewsResource extends Resource
 {
     protected static ?string $model = News::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-newspaper';
-    
+
     protected static ?string $navigationLabel = 'Notícias';
 
     protected static ?int $navigationSort = 1;
@@ -33,7 +34,7 @@ class NewsResource extends Resource
                             ->label('Título')
                             ->required()
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                            ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state))),
 
                         Forms\Components\TextInput::make('slug')
                             ->required()
@@ -50,8 +51,8 @@ class NewsResource extends Resource
                                     ->label('Nome da Categoria')
                                     ->required()
                                     ->live(onBlur: true)
-                                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
-                                
+                                    ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state))),
+
                                 Forms\Components\TextInput::make('slug')
                                     ->required()
                                     ->readOnly(),
@@ -59,7 +60,7 @@ class NewsResource extends Resource
                                 Forms\Components\ColorPicker::make('text_color')
                                     ->label('Cor do Texto')
                                     ->default('#FFF'),
-                                
+
                                 Forms\Components\ColorPicker::make('bg_color')
                                     ->label('Cor do Fundo')
                                     ->default('#a855f7'),
@@ -69,24 +70,45 @@ class NewsResource extends Resource
                             ->label('Autor')
                             ->default('Raissa')
                             ->required(),
-                            
+
                         Forms\Components\Textarea::make('excerpt')
                             ->label('Resumo')
                             ->rows(3)
                             ->columnSpanFull()
                             ->required(),
 
-                        Forms\Components\RichEditor::make('content')
+                        TiptapEditor::make('content')
                             ->label('Conteúdo Completo')
-                            ->fileAttachmentsDisk('supabase')
-                            ->fileAttachmentsDirectory('news-content')
-                            ->fileAttachmentsVisibility('public')
-                            ->columnSpanFull()
                             ->required()
+                            ->disk('supabase')
+                            ->directory('news-content')
+                            ->visibility('public')
+                            ->columnSpanFull()
                             ->extraInputAttributes([
                                 'style' => 'max-height: 500px; overflow-y: auto;',
                             ])
-                            ->columnSpanFull(),
+                            ->profile('default')
+                            ->tools([
+                                'heading',
+                                'bullet-list',
+                                'ordered-list',
+                                'blockquote',
+                                '|',
+                                'bold',
+                                'italic',
+                                'underline',
+                                'strike',
+                                'color',
+                                'align-left',
+                                'align-center',
+                                'align-right',
+                                'align-justify',
+                                '|',
+                                'link',
+                                'media',
+                                'code-block',
+                                'source',
+                            ])
                     ])->columns(2),
 
                 // Card Lateral (Imagem e Status)
@@ -107,11 +129,11 @@ class NewsResource extends Resource
                             ->label('Ativo?')
                             ->default(true),
                         Forms\Components\Toggle::make('is_featured')
-                                ->label('Destaque no Carrossel?')
-                                ->onColor('warning')
-                                ->default(false),
+                            ->label('Destaque no Carrossel?')
+                            ->onColor('warning')
+                            ->default(false),
                     ])->columns(1),
-                    
+
             ]);
     }
 
@@ -123,22 +145,22 @@ class NewsResource extends Resource
                     ->label('Capa')
                     ->disk('supabase')
                     ->visibility('public'),
-                
+
                 Tables\Columns\TextColumn::make('title')
                     ->label('Título')
                     ->searchable()
                     ->sortable(),
-                
+
                 Tables\Columns\TextColumn::make('category.name')
                     ->label('Categoria')
                     ->badge()
                     ->sortable(),
-                
+
                 Tables\Columns\TextColumn::make('published_at')
                     ->label('Data')
                     ->dateTime('d/m/Y H:i')
                     ->sortable(),
-                
+
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Ativo')
                     ->boolean(),
@@ -148,7 +170,7 @@ class NewsResource extends Resource
                     ->boolean()
                     ->trueIcon('heroicon-o-star') // Ícone de estrelinha
                     ->falseIcon('heroicon-o-minus')
-                    ->color(fn (string $state): string => $state ? 'warning' : 'gray'),
+                    ->color(fn(string $state): string => $state ? 'warning' : 'gray'),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([

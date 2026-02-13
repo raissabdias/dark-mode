@@ -19,6 +19,8 @@
     },
     "dependencies": {
         "@primevue/themes": "^4.5.4",
+        "@tiptap/core": "^3.19.0",
+        "@tiptap/pm": "^3.19.0",
         "@vitejs/plugin-vue": "^6.0.4",
         "primeicons": "^7.0.0",
         "primevue": "^4.5.4",
