@@ -95,10 +95,10 @@ watch(() => [route?.query?.categoryIds, route?.query?.page], () => {
 </script>
 
 <template>
-    <div class="flex flex-col lg:flex-row gap-8 py-8 animate-fade-in">
+    <div class="flex flex-col lg:flex-row gap-8 py-2 md:py-8 animate-fade-in">
         <div class="w-full lg:w-3/4">
             <h1
-                class="text-2xl md:text-4xl font-bold text-white mb-6 border-l-4 border-purple-500 pl-4 font-michroma uppercase tracking-tighter">
+                class="text-2xl md:text-4xl font-bold text-white mb-6 border-l-4 border-purple-500 pl-4 font-michroma tracking-tighter">
                 {{ props.pageTitle }}
             </h1>
             <div v-if="showFilters"
@@ -121,7 +121,7 @@ watch(() => [route?.query?.categoryIds, route?.query?.page], () => {
             </div>
             <div v-else>
                 <div v-if="newsData.data.length === 0"
-                    class="text-gray-400 text-lg py-16 bg-gray-900/30 rounded-xl text-center border border-dashed border-gray-800 font-michroma">
+                    class="text-gray-400 text-lg py-16 bg-gray-900/30 rounded-xl text-center border border-dashed border-gray-800">
                     Nenhuma publicação encontrada nesta categoria.
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">

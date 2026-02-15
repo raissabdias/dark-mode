@@ -9,8 +9,8 @@ const router = useRouter();
 
 const items = ref([
     { label: 'Notícias', icon: 'pi pi-megaphone', route: '/noticias' },
-    { label: 'Reviews', icon: 'pi pi-star', route: '/reviews' },
     { label: 'Agenda', icon: 'pi pi-calendar', route: '/agenda' },
+    { label: 'Reviews', icon: 'pi pi-star', route: '/reviews' },
     { label: 'Guia', icon: 'pi pi-book', route: '/guia' },
     { key: 'search-mobile', class: 'min-[1180px]:hidden' },
     { key: 'social-mobile', class: 'min-[1180px]:hidden' }
