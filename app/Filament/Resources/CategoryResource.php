@@ -35,6 +35,7 @@ class CategoryResource extends Resource
 
                 Forms\Components\ColorPicker::make('text_color')->label('Cor do Texto (Hex)')->default('#FFF'),
                 Forms\Components\ColorPicker::make('bg_color')->label('Cor do Fundo (Hex)')->default('#a855f7'),
+                Forms\Components\TextInput::make('filter_name')->label('Nome do Filtro'),
             ]);
     }
 

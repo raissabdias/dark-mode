@@ -113,7 +113,7 @@ watch(() => [route?.query?.categoryIds, route?.query?.page], () => {
                     :class="[route?.query?.categoryIds == cat.id ? 'text-white border-transparent shadow-lg' : 'bg-gray-800 border-gray-700 text-gray-500 hover:text-gray-300']"
                     :style="route?.query?.categoryIds == cat.id ? { backgroundColor: cat.bg_color || '#7c3aed' } : {}"
                     class="px-3 py-1 rounded-full text-[12px] font-bold uppercase border transition-all cursor-pointer">
-                    {{ cat.name }}
+                    {{ cat.filter_name || cat.name }}
                 </button>
             </div>
             <div v-if="loading" class="flex justify-center py-20">
