@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Comment;
 use App\Models\News;
 use Illuminate\Http\Request;
 
@@ -15,7 +14,12 @@ class CommentController extends Controller
     public function index($slug)
     {
         $news = News::where('slug', $slug)->firstOrFail();
-        return response()->json($news->comments);
+
+        $comments = $news->comments()
+            ->select(['name', 'created_at', 'content'])
+            ->get();
+
+        return response()->json($comments);
     }
 
     /**
