@@ -45,6 +45,7 @@ Route::get('/news-paginated', function (Request $request) {
         });
     }
 
+    $query->where('is_active', true);
     $query->orderBy('published_at', 'desc');
     return $query->paginate(9);
 });
@@ -59,6 +60,7 @@ Route::get('/events', function (Request $request) {
         $query->whereMonth('event_date', $request->month);
     }
 
+    $query->where('is_active', true);
     $query->orderBy('event_date', 'asc');
     $perPage = $request->input('per_page', 10);
 
@@ -67,6 +69,7 @@ Route::get('/events', function (Request $request) {
 
 Route::get('/events/comming', function () {
     return Event::whereDate('event_date', '>=', now())
+        ->where('is_active', true)
         ->orderBy('event_date', 'asc')
         ->take(10)
         ->get();
