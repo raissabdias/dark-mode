@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { useRouter } from 'vue-router';
 import Menubar from 'primevue/menubar';
 import AutoComplete from 'primevue/autocomplete';
@@ -8,14 +8,37 @@ import SocialIcons from './SocialIcons.vue';
 const router = useRouter();
 
 const items = ref([
-    { label: 'Home', icon: 'pi pi-home', route: '/' },
     { label: 'Notícias', icon: 'pi pi-megaphone', route: '/noticias' },
     { label: 'Reviews', icon: 'pi pi-star', route: '/reviews' },
     { label: 'Agenda', icon: 'pi pi-calendar', route: '/agenda' },
     { label: 'Guia', icon: 'pi pi-book', route: '/guia' },
-    { key: 'search-mobile', class: 'lg:hidden' },
-    { key: 'social-mobile', class: 'lg:hidden' }
+    { key: 'search-mobile', class: 'min-[1180px]:hidden' },
+    { key: 'social-mobile', class: 'min-[1180px]:hidden' }
 ]);
+
+const viewportWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1400);
+
+const updateViewportWidth = () => {
+    viewportWidth.value = window.innerWidth;
+};
+
+onMounted(() => {
+    window.addEventListener('resize', updateViewportWidth);
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener('resize', updateViewportWidth);
+});
+
+const displayItems = computed(() => {
+    const hideGuia = viewportWidth.value >= 1180 && viewportWidth.value < 1400;
+
+    if (!hideGuia) {
+        return items.value;
+    }
+
+    return items.value.filter((item) => item.route !== '/agenda');
+});
 
 const searchQuery = ref('');
 const searchResults = ref([]);
@@ -57,18 +80,18 @@ const selectNews = (event) => {
 
 <template>
     <div class="sticky top-0 z-[1000] w-full">
-        <Menubar :model="items"
+        <Menubar :model="displayItems" breakpoint="1179px"
             class="w-full bg-black/95 backdrop-blur-md border-b border-white/10 rounded-none px-4 py-3 lg:px-8 flex items-center justify-between"
             :pt="{
                 root: { class: '!border-b-2 !border-black !rounded-none' },
                 button: { class: 'ml-auto order-3 text-gray-200 hover:bg-white/10 focus:ring-0 w-10 h-10 flex items-center justify-center rounded-lg transition-all' },
-                rootList: { class: '!bg-black/95 !border-t-2 !border-black lg:!bg-transparent lg:!border-none w-full lg:w-auto top-full left-0 absolute lg:static shadow-xl lg:shadow-none' },
+                rootList: { class: '!bg-black/95 !border-t-2 !border-black min-[1180px]:!bg-transparent min-[1180px]:!border-none w-full min-[1180px]:w-auto top-full left-0 absolute min-[1180px]:static shadow-xl min-[1180px]:shadow-none' },
                 itemContent: { class: 'text-gray-200 hover:text-white' },
-                itemLink: { class: 'py-3 px-4 lg:py-2 lg:px-3' },
+                itemLink: { class: 'py-3 px-4 min-[1180px]:py-2 min-[1180px]:px-3' },
                 end: { class: 'w-full max-w-xl' }
             }">
             <template #start>
-                <router-link to="/" class="flex items-center gap-2 mr-4 lg:mr-8 shrink-0 order-1">
+                <router-link to="/" class="flex items-center gap-2 mr-4 min-[1180px]:mr-8 shrink-0 order-1">
                     <img src="/images/logo.png" alt="DarkMode Logo"
                         class="h-8 md:h-9 w-auto object-contain hover:opacity-80 transition-opacity" />
                 </router-link>
@@ -130,19 +153,19 @@ const selectNews = (event) => {
                 </div>
                 <router-link v-else :to="item.route" custom v-slot="{ href, navigate, isActive }">
                     <a :href="href" @click="navigate" class="flex items-center group w-full" v-bind="props.action"
-                        :class="{ 'text-purple-500 font-bold': isActive }">
+                        :class="[item.class, { 'text-purple-500 font-bold': isActive }]">
                         <span
                             :class="[item.icon, isActive ? 'text-purple-500' : 'text-gray-400', 'group-hover:text-purple-400 transition-colors mr-1']" />
                         <span
-                            :class="[isActive ? 'text-white' : '', 'tracking-wide group-hover:text-white transition-colors']">{{
+                            :class="[isActive ? 'text-white' : '', 'tracking-wide group-hover:text-white transition-colors', item.label ? 'menu-label-michroma' : '']">{{
                                 item.label }}</span>
                     </a>
                 </router-link>
             </template>
             <template #end>
-                <div class="hidden lg:flex items-center gap-6 flex-1">
+                <div class="hidden min-[1180px]:flex items-center gap-4 2xl:gap-6 flex-1">
                     <!-- Search Bar Desktop -->
-                    <div class="flex-1 relative max-w-xl">
+                    <div class="flex-1 relative min-[1180px]:max-w-sm xl:max-w-md 2xl:max-w-xl">
                         <i class="pi pi-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
                             style="z-index: 999;"></i>
                         <AutoComplete v-model="searchQuery" :suggestions="searchResults" @complete="searchNews"
@@ -150,7 +173,7 @@ const selectNews = (event) => {
                             :loading="searchLoading" class="w-full" :pt="{
                                 root: { class: 'w-full !relative', style: 'position: relative; z-index: 1' },
                                 pcInputText: {
-                                    class: 'w-full text-white placeholder:text-gray-500 rounded-full pl-12 pr-5 py-2.5 text-base !border-0 focus:!border-0 focus:!outline-none focus:ring-2 focus:ring-purple-500/50',
+                                    class: 'w-full text-white placeholder:text-gray-500 rounded-full pl-12 pr-5 py-2.5 text-sm 2xl:text-base !border-0 focus:!border-0 focus:!outline-none focus:ring-2 focus:ring-purple-500/50',
                                     style: 'background-color: #000 !important; position: relative; z-index: 1'
                                 },
                                 overlay: {
@@ -210,6 +233,13 @@ const selectNews = (event) => {
     text-shadow: 0 0 12px rgba(168, 85, 247, 0.5);
 }
 
+.menu-label-michroma {
+    font-family: 'Michroma', sans-serif;
+    font-family: 'Michroma', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+}
+
 /* Force autocomplete to take full width */
 :deep(.p-autocomplete),
 :deep(.p-autocomplete-input-multiple) {
@@ -246,7 +276,7 @@ const selectNews = (event) => {
 }
 
 /* Remove hover effect on mobile */
-@media (max-width: 1024px) {
+@media (max-width: 1179px) {
     :deep(.p-menubar-item:not(.p-disabled) > .p-menubar-item-content:hover) {
         color: inherit !important;
         background: transparent !important;
