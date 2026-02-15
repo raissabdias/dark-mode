@@ -107,7 +107,7 @@ watch(() => [route?.query?.categoryIds, route?.query?.page], () => {
                 <button @click="filterByCategory(null)"
                     :class="[!route?.query?.categoryIds ? 'bg-purple-600 border-purple-600 text-white shadow-lg' : 'bg-gray-800 border-gray-700 text-gray-400']"
                     class="px-3 py-1 rounded-full text-[12px] font-bold uppercase border transition-all cursor-pointer hover:border-purple-500">
-                    Todas
+                    Todos
                 </button>
                 <button v-for="cat in filteredCategories" :key="cat.id" @click="filterByCategory(cat.id)"
                     :class="[route?.query?.categoryIds == cat.id ? 'text-white border-transparent shadow-lg' : 'bg-gray-800 border-gray-700 text-gray-500 hover:text-gray-300']"

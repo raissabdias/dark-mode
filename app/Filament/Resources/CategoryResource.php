@@ -9,6 +9,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Forms\Set;
+use Illuminate\Support\Str;
 
 class CategoryResource extends Resource
 {
