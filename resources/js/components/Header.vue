@@ -12,6 +12,7 @@ const items = ref([
     { label: 'Notícias', icon: 'pi pi-megaphone', route: '/noticias' },
     { label: 'Reviews', icon: 'pi pi-star', route: '/reviews' },
     { label: 'Agenda', icon: 'pi pi-calendar', route: '/agenda' },
+    { label: 'Guia', icon: 'pi pi-book', route: '/guia' },
     { key: 'search-mobile', class: 'lg:hidden' },
     { key: 'social-mobile', class: 'lg:hidden' }
 ]);
@@ -74,7 +75,8 @@ const selectNews = (event) => {
             </template>
             <template #item="{ item, props }">
                 <!-- Search Bar Mobile -->
-                <div v-if="item.key === 'search-mobile'" class="mobile-search px-4 py-3 relative" @click.stop @keydown.stop>
+                <div v-if="item.key === 'search-mobile'" class="mobile-search px-4 py-3 relative" @click.stop
+                    @keydown.stop>
                     <i class="pi pi-search absolute left-7 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
                         style="z-index: 999;"></i>
                     <AutoComplete v-model="searchQuery" :suggestions="searchResults" @complete="searchNews"
@@ -130,7 +132,7 @@ const selectNews = (event) => {
                     <a :href="href" @click="navigate" class="flex items-center group w-full" v-bind="props.action"
                         :class="{ 'text-purple-500 font-bold': isActive }">
                         <span
-                            :class="[item.icon, isActive ? 'text-purple-500' : 'text-gray-400', 'group-hover:text-purple-400 transition-colors mr-3']" />
+                            :class="[item.icon, isActive ? 'text-purple-500' : 'text-gray-400', 'group-hover:text-purple-400 transition-colors mr-1']" />
                         <span
                             :class="[isActive ? 'text-white' : '', 'tracking-wide group-hover:text-white transition-colors']">{{
                                 item.label }}</span>

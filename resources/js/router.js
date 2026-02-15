@@ -37,7 +37,17 @@ const routes = [
         name: 'agenda.index',
         component: AgendaIndex,
         meta: { title: 'Agenda' }
-    }
+    },
+    {
+        path: '/guia',
+        name: 'guia.index',
+        component: NewsIndex,
+        props: { 
+            categoryIds: '23,24', 
+            pageTitle: 'Guia' 
+        },
+        meta: { title: 'Guia' }
+    },
 ];
 
 const router = createRouter({
