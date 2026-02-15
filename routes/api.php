@@ -6,6 +6,7 @@ use App\Models\News;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\CommentController;
+use App\Models\Category;
 
 Route::get('/news', function () {
     return News::where('is_active', true)
@@ -105,3 +106,7 @@ Route::get('/news/search/query', function (Request $request) {
 Route::get('/news/{slug}/comments', [CommentController::class, 'index']);
 
 Route::post('/news/{slug}/comments', [CommentController::class, 'store']);
+
+Route::get('/categories', function () {
+    return Category::orderBy('name')->get();
+});
