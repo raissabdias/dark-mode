@@ -25,16 +25,13 @@ defineProps({ post: Object });
                     <div v-else class="author-avatar-placeholder">
                         <i class="pi pi-user text-[10px] text-gray-500"></i>
                     </div>
-                    
                     <span class="author">
                         {{ post.columnist?.name || post.author || 'Redação' }}
                     </span>
                 </div>
             </div>
-
             <h3 class="title group-hover:text-purple-400 transition-colors">{{ post.title }}</h3>
             <p class="excerpt">{{ post.excerpt }}</p>
-            
             <div class="flex items-center font-semibold text-sm mt-auto read-more">
                 Ler Matéria <i class="pi pi-arrow-right ml-1 group-hover:translate-x-1 transition-transform"></i>
             </div>
@@ -140,7 +137,7 @@ defineProps({ post: Object });
 
 .title {
     font-size: 1.1rem;
-    font-weight: 700;
+    font-weight: 500;
     color: white;
     margin-bottom: 0.75rem;
     line-height: 1.4;

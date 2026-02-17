@@ -3,6 +3,7 @@ import HomeView from './views/HomeView.vue';
 import NewsDetail from './components/NewsDetail.vue';
 import NewsIndex from './views/NewsIndex.vue';
 import AgendaIndex from './views/AgendaIndex.vue';
+import ColumnistView from './views/ColumnistView.vue';
 
 const routes = [
     {
@@ -47,6 +48,11 @@ const routes = [
             pageTitle: 'Guia' 
         },
         meta: { title: 'Guia' }
+    },
+    {
+        path: '/colunista/:slug',
+        name: 'columnist',
+        component: ColumnistView
     },
 ];
 

@@ -109,11 +109,14 @@ const copyToClipboard = () => {
                             <i class="pi pi-calendar text-[10px] md:text-xs"></i>
                             {{ formatDate(news.created_at) }}
                         </span>
-                        <div class="flex items-center gap-2">
+                        <router-link :to="{ name: 'columnist', params: { slug: news.columnist.slug } }"
+                            class="author-wrapper flex items-center gap-2 hover:opacity-80 transition-opacity">
                             <img v-if="news.columnist?.avatar_url" :src="news.columnist.avatar_url"
-                                class="w-6 h-6 rounded-full border border-black object-cover" />
-                            <span class="text-purple-400 font-semibold">{{ news.columnist?.name || news.author || 'Redação' }}</span>
-                        </div>
+                                class="w-6 h-6 md:w-8 md:h-8 rounded-full border border-black object-cover shrink-0" />
+                            <span class="text-purple-400 font-semibold leading-none">
+                                {{ news.columnist?.name || news.author || 'Redação' }}
+                            </span>
+                        </router-link>
                     </div>
                     <h1 class="text-2xl md:text-4xl font-bold text-white mb-6 leading-tight font-michroma">
                         {{ news.title }}
@@ -121,13 +124,21 @@ const copyToClipboard = () => {
                     <div class="prose prose-sm md:prose-lg max-w-none dark:prose-invert text-gray-300 leading-relaxed mb-10"
                         v-html="cleanedContent"></div>
                     <div v-if="news.columnist && news.columnist.bio"
-                        class="author-bio-box bg-neutral-900/50 border border-gray-800 rounded-xl p-3 mb-6 flex flex-col md:flex-row items-center gap-6">
-                        <img :src="news.columnist.avatar_url || 'https://via.placeholder.com/150'"
-                            class="w-15 h-15 rounded-full object-cover shadow-2xl" />
-                        <div class="text-center md:text-left">
-                            <h4 class="text-purple-400 text-lg font-michroma mb-2">{{ news.columnist.name }}</h4>
-                            <p class="text-gray-400 text-sm leading-relaxed mb-0">
-                                {{ news.columnist.bio || 'Colaborador Dark Mode' }}
+                        class="author-bio-box bg-neutral-900/50 border border-gray-800 rounded-xl p-4 mb-8 flex flex-row items-center gap-4 md:gap-6">
+                        <router-link :to="{ name: 'columnist', params: { slug: news.columnist.slug } }"
+                            class="shrink-0 hover:opacity-80 transition-opacity">
+                            <img :src="news.columnist.avatar_url || 'https://via.placeholder.com/150'"
+                                class="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover shadow-xl" />
+                        </router-link>
+                        <div class="flex-1 text-left">
+                            <router-link :to="{ name: 'columnist', params: { slug: news.columnist.slug } }"
+                                class="hover:opacity-80 transition-opacity">
+                                <h4 class="text-purple-400 text-sm md:text-lg font-michroma mb-1">{{ news.columnist.name
+                                    }}</h4>
+                            </router-link>
+                            <p
+                                class="text-gray-400 text-xs md:text-sm leading-relaxed mb-0 line-clamp-3 md:line-clamp-none">
+                                {{ news.columnist.bio }}
                             </p>
                         </div>
                     </div>
@@ -242,9 +253,13 @@ const copyToClipboard = () => {
     border-color: #facc15;
 }
 
-/* Bio Box Style */
 .author-bio-box {
     box-shadow: inset 0 0 20px rgba(168, 85, 247, 0.05);
+}
+
+.author-wrapper {
+    display: inline-flex;
+    align-items: center;
 }
 
 :deep(.prose blockquote) {

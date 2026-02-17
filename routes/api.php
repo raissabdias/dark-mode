@@ -6,6 +6,7 @@ use App\Models\News;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\ColumnistController;
 use App\Models\Category;
 
 Route::get('/news', function () {
@@ -37,7 +38,6 @@ Route::get('/news-paginated', function (Request $request) {
     $query = News::with(['category', 'columnist']);
     if ($request->has('categories') && $request->categories) {
         $categoryIds = explode(',', $request->categories);
-        
         $query->whereIn('category_id', $categoryIds);
     }
     
@@ -111,3 +111,5 @@ Route::post('/news/{slug}/comments', [CommentController::class, 'store']);
 Route::get('/categories', function () {
     return Category::orderBy('name')->get();
 });
+
+Route::get('/columnists/{slug}', [ColumnistController::class, 'show']);
