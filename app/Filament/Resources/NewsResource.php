@@ -67,11 +67,6 @@ class NewsResource extends Resource
                                     ->default('#a855f7'),
                             ]),
 
-                        Forms\Components\TextInput::make('author')
-                            ->label('Autor')
-                            ->default('Raissa')
-                            ->required(),
-
                         Select::make('columnist_id')
                             ->label('Colunista / Autor')
                             ->relationship('columnist', 'name')
