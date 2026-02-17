@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class News extends Model
 {
@@ -49,5 +50,10 @@ class News extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class)->where('is_approved', true)->latest();
+    }
+
+    public function columnist(): BelongsTo
+    {
+        return $this->belongsTo(Columnist::class);
     }
 }

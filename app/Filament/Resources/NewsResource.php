@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use FilamentTiptapEditor\TiptapEditor;
+use Filament\Forms\Components\Select;
 
 class NewsResource extends Resource
 {
@@ -70,6 +71,25 @@ class NewsResource extends Resource
                             ->label('Autor')
                             ->default('Raissa')
                             ->required(),
+
+                        Select::make('columnist_id')
+                            ->label('Colunista / Autor')
+                            ->relationship('columnist', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->default(function () {
+                                return \App\Models\Columnist::where('slug', 'equipe-dark-mode')->first()?->id;
+                            })
+                            ->createOptionForm([ // Permite criar um colunista rápido sem sair da tela de notícia
+                                Forms\Components\TextInput::make('name')
+                                    ->required()
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(fn ($set, $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                                Forms\Components\TextInput::make('slug')
+                                    ->required()
+                                    ->unique('columnists', 'slug'),
+                            ]),
 
                         Forms\Components\Textarea::make('excerpt')
                             ->label('Resumo')
@@ -155,6 +175,11 @@ class NewsResource extends Resource
                     ->label('Categoria')
                     ->badge()
                     ->sortable(),
+
+                Tables\Columns\TextColumn::make('columnist.name')
+                    ->label('Autor')
+                    ->sortable()
+                    ->searchable(),
 
                 Tables\Columns\TextColumn::make('published_at')
                     ->label('Data')

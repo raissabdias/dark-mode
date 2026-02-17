@@ -1,10 +1,12 @@
 <?php
 
-use App\Models\News;
 use App\Models\Event;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
+use App\Models\Columnist;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 /**
  * Redirect temporário de rotas antigas utéis para SEO e manutenção de links
