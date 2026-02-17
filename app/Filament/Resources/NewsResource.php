@@ -79,7 +79,8 @@ class NewsResource extends Resource
                             ->preload()
                             ->required()
                             ->default(function () {
-                                return \App\Models\Columnist::where('slug', 'equipe-dark-mode')->first()?->id;
+                                $user = auth()->user();
+                                return \App\Models\Columnist::where('user_id', $user->id)->first()?->id;
                             })
                             ->createOptionForm([ // Permite criar um colunista rápido sem sair da tela de notícia
                                 Forms\Components\TextInput::make('name')
