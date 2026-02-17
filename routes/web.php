@@ -2,10 +2,7 @@
 
 use App\Models\Event;
 use Illuminate\Support\Facades\Route;
-use App\Models\User;
-use App\Models\Columnist;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 /**
@@ -79,3 +76,4 @@ Route::get('/limpar-cache', function () {
     Artisan::call('view:clear');
     return "<h1>Todos os caches foram limpos com sucesso! 🦇</h1>";
 });
+
