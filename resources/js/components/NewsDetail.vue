@@ -57,7 +57,6 @@ const goBack = () => {
         router.back();
         return;
     }
-
     router.push('/');
 };
 
@@ -66,11 +65,6 @@ const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('pt-BR', {
         day: '2-digit', month: 'long', year: 'numeric'
     });
-};
-
-const getAuthorName = (authorData) => {
-    if (!authorData) return 'Redação';
-    return authorData.name || authorData;
 };
 
 const cleanedContent = computed(() => {
@@ -82,10 +76,7 @@ const cleanedContent = computed(() => {
 });
 
 const scrollToTop = () => {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const copyToClipboard = () => {
@@ -106,7 +97,7 @@ const copyToClipboard = () => {
                     class="w-full h-56 md:h-96 object-cover">
                 <div class="p-5 md:p-8">
                     <div
-                        class="flex flex-wrap items-center gap-3 md:gap-4 text-xs md:text-sm text-gray-500 dark:text-gray-400 mb-4">
+                        class="flex flex-wrap items-center gap-3 md:gap-4 text-xs md:text-sm text-gray-500 dark:text-gray-400 mb-6">
                         <span class="px-2 py-1 rounded-md text-[10px] md:text-xs font-semibold uppercase tracking-wide"
                             :style="{
                                 backgroundColor: news.category.bg_color,
@@ -118,17 +109,28 @@ const copyToClipboard = () => {
                             <i class="pi pi-calendar text-[10px] md:text-xs"></i>
                             {{ formatDate(news.created_at) }}
                         </span>
-                        <span class="flex items-center gap-1">
-                            <i class="pi pi-user text-[10px] md:text-xs"></i>
-                            <span class="text-purple-400 font-semibold">{{ getAuthorName(news.author || news.user)
-                                }}</span>
-                        </span>
+                        <div class="flex items-center gap-2">
+                            <img v-if="news.columnist?.avatar_url" :src="news.columnist.avatar_url"
+                                class="w-6 h-6 rounded-full border border-black object-cover" />
+                            <span class="text-purple-400 font-semibold">{{ news.columnist?.name || news.author || 'Redação' }}</span>
+                        </div>
                     </div>
                     <h1 class="text-2xl md:text-4xl font-bold text-white mb-6 leading-tight font-michroma">
                         {{ news.title }}
                     </h1>
                     <div class="prose prose-sm md:prose-lg max-w-none dark:prose-invert text-gray-300 leading-relaxed mb-10"
                         v-html="cleanedContent"></div>
+                    <div v-if="news.columnist && news.columnist.bio"
+                        class="author-bio-box bg-neutral-900/50 border border-gray-800 rounded-xl p-3 mb-6 flex flex-col md:flex-row items-center gap-6">
+                        <img :src="news.columnist.avatar_url || 'https://via.placeholder.com/150'"
+                            class="w-15 h-15 rounded-full object-cover shadow-2xl" />
+                        <div class="text-center md:text-left">
+                            <h4 class="text-purple-400 text-lg font-michroma mb-2">{{ news.columnist.name }}</h4>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-0">
+                                {{ news.columnist.bio || 'Colaborador Dark Mode' }}
+                            </p>
+                        </div>
+                    </div>
                     <div class="share-box border-t border-gray-800 pt-8 mb-8">
                         <p
                             class="text-[10px] md:text-xs uppercase tracking-widest text-gray-500 mb-5 font-bold text-center md:text-left">
@@ -156,7 +158,8 @@ const copyToClipboard = () => {
                     <div class="flex justify-center border-t border-gray-800 pt-8">
                         <button @click="goBack"
                             class="group flex items-center gap-2 px-8 py-3 bg-gray-900 hover:bg-purple-600 border border-gray-700 hover:border-purple-500 text-gray-300 hover:text-white rounded-full transition-all duration-300 font-bold shadow-lg w-full md:w-auto justify-center cursor-pointer">
-                            <i class="pi pi-arrow-left group-hover:-translate-y-1 transition-transform duration-300"></i>
+                            <i
+                                class="pi pi-arrow-left group-hover:-translate-y-1 transition-transform duration-300"></i>
                             Voltar para página anterior
                         </button>
                     </div>
@@ -165,13 +168,7 @@ const copyToClipboard = () => {
             <div v-else class="text-center py-20">
                 <p class="text-gray-500 text-lg">Notícia não encontrada.</p>
                 <button @click="goBack"
-                    class="inline-flex items-center justify-center px-6 py-1 my-4 font-bold text-white transition-all duration-200 bg-transparent border-2 border-purple-600 rounded-full hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-600 cursor-pointer back-home text-sm md:text-base">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5 mr-2" viewBox="0 0 20 20"
-                        fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
-                            clip-rule="evenodd" />
-                    </svg>
+                    class="inline-flex items-center justify-center px-6 py-1 my-4 font-bold text-white transition-all duration-200 bg-transparent border-2 border-purple-600 rounded-full hover:bg-purple-600 cursor-pointer text-sm md:text-base">
                     Voltar para página anterior
                 </button>
             </div>
@@ -225,16 +222,6 @@ const copyToClipboard = () => {
     @apply bg-neutral-900 border-purple-600 text-white shadow-xl;
 }
 
-@media (min-width: 768px) {
-    .share-btn {
-        @apply px-4 py-2;
-    }
-
-    .share-btn:hover {
-        transform: translateY(-2px);
-    }
-}
-
 .wa:hover {
     color: #25d366;
     border-color: #25d366;
@@ -255,14 +242,14 @@ const copyToClipboard = () => {
     border-color: #facc15;
 }
 
-:deep(.prose blockquote),
-:deep(.body-text blockquote) {
+/* Bio Box Style */
+.author-bio-box {
+    box-shadow: inset 0 0 20px rgba(168, 85, 247, 0.05);
+}
+
+:deep(.prose blockquote) {
     @apply border-l-4 border-purple-600 pl-6 my-8 text-gray-400 bg-gray-900/30 py-4 rounded-r-lg;
     font-size: 1.1rem;
     line-height: 1.6;
-}
-
-:deep(.prose blockquote p) {
-    @apply mb-0;
 }
 </style>

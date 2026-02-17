@@ -10,7 +10,7 @@ use App\Models\Category;
 
 Route::get('/news', function () {
     return News::where('is_active', true)
-        ->with(['category'])
+        ->with(['category', 'columnist'])
         ->orderBy('published_at', 'desc')
         ->take(9)
         ->get();
@@ -20,7 +20,7 @@ Route::get('/news/featured', function (Request $request) {
     $limit = $request->input('limit', 15);
     return \App\Models\News::where('is_active', true)
         ->where('is_featured', true)
-        ->with(['category'])
+        ->with(['category', 'columnist'])
         ->orderBy('published_at', 'desc')
         ->take($limit)
         ->get();
@@ -29,11 +29,12 @@ Route::get('/news/featured', function (Request $request) {
 Route::get('/news/{slug}', function ($slug) {
     return News::where('slug', $slug)
         ->with(['category'])
+        ->with(['columnist'])
         ->firstOrFail();
 });
 
 Route::get('/news-paginated', function (Request $request) {
-    $query = News::with('category');
+    $query = News::with(['category', 'columnist']);
     if ($request->has('categories') && $request->categories) {
         $categoryIds = explode(',', $request->categories);
         
@@ -97,7 +98,7 @@ Route::get('/news/search/query', function (Request $request) {
             $q->whereRaw('LOWER(title) LIKE ?', ["%{$searchTerm}%"])
               ->orWhereRaw('LOWER(excerpt) LIKE ?', ["%{$searchTerm}%"]);
         })
-        ->with(['category'])
+        ->with(['category', 'columnist'])
         ->orderBy('published_at', 'desc')
         ->take(8)
         ->get();

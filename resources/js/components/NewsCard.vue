@@ -15,10 +15,26 @@ defineProps({ post: Object });
             <div class="meta">
                 <span>{{ post.date_formatted }}</span>
                 <span>•</span>
-                <span class="author">{{ post.author?.name || post.author || 'Redação' }}</span>
+                <div class="author-wrapper">
+                    <img 
+                        v-if="post.columnist?.avatar_url" 
+                        :src="post.columnist.avatar_url" 
+                        class="author-avatar"
+                        :alt="post.columnist.name"
+                    />
+                    <div v-else class="author-avatar-placeholder">
+                        <i class="pi pi-user text-[10px] text-gray-500"></i>
+                    </div>
+                    
+                    <span class="author">
+                        {{ post.columnist?.name || post.author || 'Redação' }}
+                    </span>
+                </div>
             </div>
+
             <h3 class="title group-hover:text-purple-400 transition-colors">{{ post.title }}</h3>
             <p class="excerpt">{{ post.excerpt }}</p>
+            
             <div class="flex items-center font-semibold text-sm mt-auto read-more">
                 Ler Matéria <i class="pi pi-arrow-right ml-1 group-hover:translate-x-1 transition-transform"></i>
             </div>
@@ -30,7 +46,6 @@ defineProps({ post: Object });
 .news-card {
     background-color: #0a0a0a;
     border: 1px solid #262626;
-    /* Cinza mais escuro */
     border-radius: 12px;
     overflow: hidden;
     display: flex;
@@ -89,8 +104,33 @@ defineProps({ post: Object });
     color: #737373;
     margin-bottom: 0.75rem;
     display: flex;
-    gap: 0.5rem;
     align-items: center;
+    gap: 0.5rem;
+}
+
+.author-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.author-avatar {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 1px 1px 1px black;
+}
+
+.author-avatar-placeholder {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #272727;
+    box-shadow: 1px 1px 1px black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .author {
@@ -108,17 +148,6 @@ defineProps({ post: Object });
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-}
-
-@media (max-width: 640px) {
-    .title {
-        font-size: 1rem;
-        font-weight: 500;
-    }
-
-    .excerpt {
-        font-size: 0.75rem;
-    }
 }
 
 .excerpt {
@@ -140,5 +169,16 @@ defineProps({ post: Object });
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+}
+
+@media (max-width: 640px) {
+    .title {
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    .excerpt {
+        font-size: 0.75rem;
+    }
 }
 </style>
