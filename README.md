@@ -30,7 +30,7 @@ A stack foi escolhida para garantir alta performance no Front-end e facilidade d
 
 Você pode conferir o projeto em produção acessando o link abaixo:
 
-🔗 **[Acessar o portal Dark Mode](https://dark-mode-cy0c.onrender.com/)**
+🔗 **[Acessar o portal Dark Mode](https://darkmode.com.br/)**
 
 ---
 *Desenvolvido com foco em performance, UX e cultura underground.*
