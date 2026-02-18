@@ -107,7 +107,7 @@ const copyToClipboard = () => {
                         </span>
                         <span class="flex items-center gap-1">
                             <i class="pi pi-calendar text-[10px] md:text-xs"></i>
-                            {{ formatDate(news.created_at) }}
+                            {{ formatDate(news.published_at) }}
                         </span>
                         <router-link :to="{ name: 'columnist', params: { slug: news.columnist.slug } }"
                             class="author-wrapper flex items-center gap-2 hover:opacity-80 transition-opacity">
