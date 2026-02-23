@@ -20,7 +20,7 @@ class ColumnistController extends Controller
         $news = News::where('columnist_id', $columnist->id)
             ->with(['category', 'columnist'])
             ->where('is_active', true)
-            ->latest()
+            ->latest('published_at')
             ->paginate(9);
 
         return response()->json([
