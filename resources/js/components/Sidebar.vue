@@ -62,7 +62,7 @@ onMounted(() => {
             <div class="agenda-list flex flex-col gap-2">
                 <div v-for="(gig, index) in nextGigs" :key="gig.id" class="agenda-item group"
                     :class="index >= 5 ? 'hidden lg:flex' : 'flex'"
-                    @click="$router.push({ name: 'agenda.index', query: { date: gig.rawDate, view: 'month' } })"> <img :src="gig.img"
+                    @click="$router.push({ name: 'agenda.index', query: { date: gig.rawDate, view: 'month', event: gig.id } })"> <img :src="gig.img"
                         class="agenda-img" />
                     <div>
                         <div class="date">{{ gig.date }}</div>
