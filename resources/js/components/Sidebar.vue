@@ -24,7 +24,8 @@ const fetchEvents = async () => {
                 band: event.title,
                 loc: event.location,
                 img: event.image_url,
-                date: formatDateStyle(event.date || event.event_date)
+                date: formatDateStyle(event.date || event.event_date),
+                rawDate: event.date || event.event_date
             }));
         }
     } catch (error) { 
@@ -60,8 +61,9 @@ onMounted(() => {
             <h3 class="sidebar-title">Agenda</h3>
             <div class="agenda-list flex flex-col gap-2">
                 <div v-for="(gig, index) in nextGigs" :key="gig.id" class="agenda-item group"
-                    :class="index >= 5 ? 'hidden lg:flex' : 'flex'">
-                    <img :src="gig.img" class="agenda-img" />
+                    :class="index >= 5 ? 'hidden lg:flex' : 'flex'"
+                    @click="$router.push({ name: 'agenda.index', query: { date: gig.rawDate, view: 'month' } })"> <img :src="gig.img"
+                        class="agenda-img" />
                     <div>
                         <div class="date">{{ gig.date }}</div>
                         <div class="band group-hover:text-white line-clamp-1">{{ gig.band }}</div>
@@ -93,9 +95,8 @@ onMounted(() => {
                     <p class="text-xs text-gray-400 mb-4 leading-relaxed">
                         Fique por dentro dos shows e novidades do underground em primeira mão.
                     </p>
-                    <a href="https://chat.whatsapp.com/F0Pw6ClCkl3ATvaWnfdRlB?mode=gi_t" 
-                       target="_blank"
-                       class="flex items-center justify-center gap-2 w-full 
+                    <a href="https://chat.whatsapp.com/F0Pw6ClCkl3ATvaWnfdRlB?mode=gi_t" target="_blank"
+                        class="flex items-center justify-center gap-2 w-full 
                               bg-green-600 hover:bg-green-500 text-white font-bold 
                               py-3 rounded-full transition-all transform group-hover:scale-105 shadow-lg shadow-green-900/20">
                         <i class="pi pi-whatsapp text-lg"></i>
