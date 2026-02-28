@@ -59,7 +59,15 @@ class NewsCommentBot extends Command
 
             $this->info("Reading and thinking about: {$news->title}");
 
-            $commentContent = $this->aiService->generateShortComment($news->title, $news->content);
+            # Randomly select a tone for the comment to add variety
+            $tones = ['informal', 'questionador', 'entusiasta', 'curto e grosso'];
+            $selectedTone = $tones[array_rand($tones)];
+
+            # Randomly select a length for the comment
+            $lengths = ['muito curto', 'curto', 'curto', 'médio', 'médio', 'longo'];
+            $selectedLength = $lengths[array_rand($lengths)];
+
+            $commentContent = $this->aiService->generateShortComment($news->title, $news->content, $selectedTone, $selectedLength);
 
             if ($commentContent) {
                 $this->info("AI generated: " . $commentContent);
