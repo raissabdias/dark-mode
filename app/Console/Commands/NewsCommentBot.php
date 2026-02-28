@@ -41,11 +41,9 @@ class NewsCommentBot extends Command
             ->take(10)
             ->get();
 
-        $names = ['Gabriel Souza', 'Ana Beatriz', 'Lucas Oliveira', 'Mariana Costa', 'Felipe Santos', 'Juliana Lima'];
-
         foreach ($newsItems as $news) {
             # Probability: 3 in 5 (60%)
-            if (rand(1, 100) > 60) {
+            if (rand(1, 100) > 20) {
                 $this->line("Skipping: {$news->title} (Luck of the draw)");
                 continue;
             }
@@ -67,18 +65,18 @@ class NewsCommentBot extends Command
             $lengths = ['muito curto', 'curto', 'curto', 'médio', 'médio', 'longo'];
             $selectedLength = $lengths[array_rand($lengths)];
 
-            $commentContent = $this->aiService->generateShortComment($news->title, $news->content, $selectedTone, $selectedLength);
+            $data = $this->aiService->generateShortComment($news->title, $news->content, $selectedTone, $selectedLength);
 
-            if ($commentContent) {
-                $this->info("AI generated: " . $commentContent);
+            if ($data && isset($data['author_name']) && isset($data['comment_body'])) {
                 $news->comments()->create([
-                    'name' => $names[array_rand($names)],
+                    'name' => $data['author_name'],
+                    'content' => $data['comment_body'],
                     'email' => $botEmail,
-                    'content' => $commentContent,
+                    'is_approved' => true,
                     'is_read' => false
                 ]);
 
-                $this->info("Comment posted successfully!");
+                $this->info("Posted as: " . $data['author_name']);
             }
             
             sleep(22);
