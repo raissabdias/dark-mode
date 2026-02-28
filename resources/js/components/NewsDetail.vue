@@ -69,10 +69,33 @@ const formatDate = (dateString) => {
 
 const cleanedContent = computed(() => {
     if (!news.value) return '';
+
     const rawContent = news.value.content || news.value.body || '';
-    const txt = document.createElement("textarea");
-    txt.innerHTML = rawContent;
-    return txt.value;
+    if (typeof rawContent !== 'string') return '';
+
+    const hasHtmlTags = /<\/?[a-z][\s\S]*>/i.test(rawContent);
+    if (hasHtmlTags) {
+        const container = document.createElement('div');
+        container.innerHTML = rawContent;
+
+        container.querySelectorAll('p').forEach((paragraph) => {
+            const paragraphText = paragraph.textContent?.trim() || '';
+            if (/^<iframe[\s\S]*<\/iframe>$/i.test(paragraphText)) {
+                paragraph.innerHTML = paragraphText;
+            }
+        });
+
+        return container.innerHTML;
+    }
+
+    const looksEscapedHtml = /&lt;\/?[a-z][\s\S]*&gt;/i.test(rawContent);
+    if (looksEscapedHtml) {
+        const txt = document.createElement('textarea');
+        txt.innerHTML = rawContent;
+        return txt.value;
+    }
+
+    return rawContent.replace(/\n/g, '<br>');
 });
 
 const scrollToTop = () => {
@@ -220,6 +243,21 @@ const copyToClipboard = () => {
     aspect-ratio: 16 / 9;
     border-radius: 0.5rem;
     margin: 1.5rem 0;
+}
+
+:deep(.prose p) {
+    margin: 0 0 1.1rem;
+    line-height: 1.8;
+}
+
+:deep(.prose p:last-child) {
+    margin-bottom: 0;
+}
+
+:deep(.prose p br) {
+    display: block;
+    content: '';
+    margin-top: 0.55rem;
 }
 
 .share-btn {
