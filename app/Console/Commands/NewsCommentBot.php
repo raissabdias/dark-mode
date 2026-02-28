@@ -39,7 +39,7 @@ class NewsCommentBot extends Command
         $botEmail = 'bot.reader@yourportal.com';
 
         $newsItems = News::where('is_active', true)
-            ->where('published_at', '>=', now()->subDays(60))
+            ->where('published_at', '>=', now()->subDays(7))
             ->latest('published_at')
             ->take(15)
             ->get();
