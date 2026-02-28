@@ -50,10 +50,14 @@ class AiService
                                 11. Trago em alguns casos, alguma menção ou sugestão de outras bandas do mesmo estilo.
                                 12. Troque ocasionalmente uma letra por outra vizinha (ex: 'legal' por 'leagl' ou 'bom' por 'vbom') para parecer que foi digitado rápido no celular.
                                 13. Nunca escreva nome das bandas em maiúsculo (ex: THE BEATLES, IRON MAIDEN), e nem o nome das músicas, ou filmes, entre aspas.
+                                14. PROIBIDO começar frases com 'Poxa', 'Pô', 'Mano', 'Vixe' ou 'Nossa' em mais de 10% dos casos.
+                                15. Comente uns kkkk ou rs de vez em quando, mas não exagere.
+                                16. Erre o use da vírgula de vez em quando, mas sem exagerar.
 
                                 REGRAS PARA O NOME (author_name):
                                 1. Crie nomes realistas e variados: as vezes nome completo, as vezes só primeiro nome, as vezes nicknames (ex: metal_vibe, Ana Paula, RODRIGO).
                                 2. O nome deve combinar com a personalidade do comentário.
+                                3. Varie radicalmente: 'Carlos_82', 'ana clara', 'MARCOS', 'MetalHead_BR', 'Felipe S.'.
                             "
                         ],
                         [

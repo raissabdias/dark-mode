@@ -36,22 +36,23 @@ class NewsCommentBot extends Command
      */
     public function handle()
     {
+        $botEmail = 'bot.reader@yourportal.com';
+
         $newsItems = News::where('is_active', true)
+            ->where('published_at', '>=', now()->subDays(60))
             ->latest('published_at')
-            ->take(10)
+            ->take(15)
             ->get();
+
+        if ($newsItems->isEmpty()) {
+            $this->warn("Nenhuma notícia encontrada nos últimos 7 dias.");
+            return;
+        }
 
         foreach ($newsItems as $news) {
             # Probability: 3 in 5 (60%)
-            if (rand(1, 100) > 20) {
+            if (rand(1, 100) > 80) {
                 $this->line("Skipping: {$news->title} (Luck of the draw)");
-                continue;
-            }
-
-            # Avoid double commenting on the same news
-            $botEmail = 'bot.reader@yourportal.com';
-            if ($news->comments()->where('email', $botEmail)->exists()) {
-                $this->line("Already commented on: {$news->title}");
                 continue;
             }
 
@@ -76,7 +77,7 @@ class NewsCommentBot extends Command
                     'is_read' => false
                 ]);
 
-                $this->info("Posted as: " . $data['author_name']);
+                $this->info("Posted as: " . $data['author_name'] . " | Tone: {$selectedTone} | Length: {$selectedLength}" . " | Comment: " . $data['comment_body'] . "\n");
             }
             
             sleep(22);
