@@ -237,29 +237,6 @@ const copyToClipboard = () => {
     }
 }
 
-:deep(.prose iframe) {
-    width: 100% !important;
-    height: auto !important;
-    aspect-ratio: 16 / 9;
-    border-radius: 0.5rem;
-    margin: 1.5rem 0;
-}
-
-:deep(.prose p) {
-    margin: 0 0 1.1rem;
-    line-height: 1.8;
-}
-
-:deep(.prose p:last-child) {
-    margin-bottom: 0;
-}
-
-:deep(.prose p br) {
-    display: block;
-    content: '';
-    margin-top: 0.55rem;
-}
-
 .share-btn {
     @apply flex items-center justify-center gap-2 px-3 py-3 rounded-lg text-[11px] md:text-sm font-bold transition-all duration-300 cursor-pointer;
     background: #0d0d0d;
@@ -301,8 +278,6 @@ const copyToClipboard = () => {
 }
 
 :deep(.prose blockquote) {
-    @apply border-l-4 border-purple-600 pl-6 my-8 text-gray-400 bg-gray-900/30 py-4 rounded-r-lg;
-    font-size: 1.1rem;
-    line-height: 1.6;
+    @apply border-l-4 border-purple-600 pl-6 my-2 text-gray-400 bg-gray-700/30 pr-4 py-2 rounded-r-lg;
 }
 </style>
