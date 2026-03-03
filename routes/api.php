@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\ColumnistController;
 use App\Models\Category;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 
 Route::get('/news', function () {
     return News::where('is_active', true)
@@ -113,3 +115,22 @@ Route::get('/categories', function () {
 });
 
 Route::get('/columnists/{slug}', [ColumnistController::class, 'show']);
+
+/**
+ * Rota BOT (Temporário para testes e execução manual via URL, não deve ser exposta em produção)
+ */
+Route::get('/run-bot-dmnc', function () {
+    ini_set('max_execution_time', 300);
+    set_time_limit(300);
+
+    try {
+        Log::info("Gatilho do Bot acessado via URL.");
+        Artisan::call('bot:comment-news');
+        $output = Artisan::output();
+        Log::info("Saída do Bot: " . $output);
+        return "Bot Finalizado! Confira os logs ou o site. Saída: <pre>$output</pre>";
+    } catch (\Exception $e) {
+        Log::error("Erro na Rota do Bot: " . $e->getMessage());
+        return "Erro: " . $e->getMessage();
+    }
+});

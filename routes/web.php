@@ -3,6 +3,7 @@
 use App\Models\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 /**
@@ -76,4 +77,3 @@ Route::get('/limpar-cache', function () {
     Artisan::call('view:clear');
     return "<h1>Todos os caches foram limpos com sucesso! 🦇</h1>";
 });
-
