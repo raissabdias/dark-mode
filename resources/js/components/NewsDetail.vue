@@ -280,4 +280,31 @@ const copyToClipboard = () => {
 :deep(.prose blockquote) {
     @apply border-l-4 border-purple-600 pl-6 my-2 text-gray-400 bg-gray-700/30 pr-4 py-2 rounded-r-lg;
 }
+
+:deep(.prose iframe) {
+    width: 100% !important;
+    height: auto;
+    aspect-ratio: 16 / 9; 
+    border-radius: 0.5rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+:deep(.prose .text-center img) {
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+:deep(.prose [style*="text-align: center"] img),
+:deep(.prose [style*="text-align:center"] img) {
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+:deep(.prose img) {
+    max-width: 100%;
+    height: auto;
+}
 </style>

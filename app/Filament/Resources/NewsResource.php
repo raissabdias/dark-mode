@@ -104,27 +104,6 @@ class NewsResource extends Resource
                                 'style' => 'max-height: 500px; overflow-y: auto;',
                             ])
                             ->profile('default')
-                            ->tools([
-                                'heading',
-                                'bullet-list',
-                                'ordered-list',
-                                'blockquote',
-                                '|',
-                                'bold',
-                                'italic',
-                                'underline',
-                                'strike',
-                                'color',
-                                'align-left',
-                                'align-center',
-                                'align-right',
-                                'align-justify',
-                                '|',
-                                'link',
-                                'media',
-                                'code-block',
-                                'source',
-                            ])
                     ])->columns(2),
 
                 // Card Lateral (Imagem e Status)
