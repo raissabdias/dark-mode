@@ -307,4 +307,12 @@ const copyToClipboard = () => {
     max-width: 100%;
     height: auto;
 }
+
+:deep(.prose hr) {
+    margin: 10px 0!important;
+}
+
+:deep(.prose p) {
+    margin-block-start: 1rem;
+}
 </style>
