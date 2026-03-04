@@ -334,6 +334,41 @@ const copyToClipboard = () => {
 
 :deep(.prose p) {
     margin-block-start: 1rem;
+    font-size: 1rem;
+    line-height: 1.75;
+}
+
+:deep(.prose li) {
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+:deep(.prose h1) {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    line-height: 1.2;
+    margin-top: 1.5rem;
+    margin-bottom: 0.9rem;
+}
+
+:deep(.prose h2) {
+    font-size: clamp(1.45rem, 2.6vw, 1.85rem);
+    line-height: 1.25;
+    margin-top: 1.35rem;
+    margin-bottom: 0.75rem;
+}
+
+:deep(.prose h3) {
+    font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+    line-height: 1.3;
+    margin-top: 1.2rem;
+    margin-bottom: 0.65rem;
+}
+
+:deep(.prose h4) {
+    font-size: clamp(1.1rem, 1.8vw, 1.25rem);
+    line-height: 1.35;
+    margin-top: 1rem;
+    margin-bottom: 0.55rem;
 }
 
 :deep(.prose p.dm-empty-line) {
@@ -345,5 +380,17 @@ const copyToClipboard = () => {
     display: block;
     height: 0.75rem;
     line-height: 0;
+}
+
+:deep(.prose .lead) {
+    font-size: 1.375rem;
+    line-height: 1.3;
+    font-weight: 400;
+}
+
+:deep(.prose small) {
+    font-size: 0.86rem;
+    line-height: 1.55;
+    opacity: 0.92;
 }
 </style>
