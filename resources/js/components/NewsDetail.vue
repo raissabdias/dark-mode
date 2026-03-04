@@ -382,13 +382,13 @@ const copyToClipboard = () => {
     line-height: 0;
 }
 
-:deep(.prose .lead) {
+:deep(.prose .lead p) {
     font-size: 1.375rem;
     line-height: 1.3;
     font-weight: 400;
 }
 
-:deep(.prose small) {
+:deep(.prose small p) {
     font-size: 0.86rem;
     line-height: 1.55;
     opacity: 0.92;
