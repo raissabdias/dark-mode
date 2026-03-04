@@ -78,8 +78,28 @@ const cleanedContent = computed(() => {
         const container = document.createElement('div');
         container.innerHTML = rawContent;
 
+        // Convert soft breaks to explicit spacer elements for predictable front-end spacing.
+        container.querySelectorAll('p br').forEach((lineBreak) => {
+            const spacer = document.createElement('span');
+            spacer.className = 'dm-soft-break';
+            spacer.setAttribute('aria-hidden', 'true');
+            lineBreak.replaceWith(spacer);
+        });
+
         container.querySelectorAll('p').forEach((paragraph) => {
             const paragraphText = paragraph.textContent?.trim() || '';
+            const paragraphHtml = paragraph.innerHTML.replace(/\u200B/g, '').trim();
+
+            // Keep visible blank lines from editor output like <p><br></p> or empty paragraphs.
+            const isVisuallyEmpty = !paragraphText
+                && (/^\s*(&nbsp;|<span[^>]*class=["']dm-soft-break["'][^>]*><\/span>|\s)*\s*$/i.test(paragraphHtml)
+                    || paragraphHtml === '');
+
+            if (isVisuallyEmpty) {
+                paragraph.classList.add('dm-empty-line');
+                paragraph.innerHTML = '&nbsp;';
+            }
+
             if (/^<iframe[\s\S]*<\/iframe>$/i.test(paragraphText)) {
                 paragraph.innerHTML = paragraphText;
             }
@@ -314,5 +334,16 @@ const copyToClipboard = () => {
 
 :deep(.prose p) {
     margin-block-start: 1rem;
+}
+
+:deep(.prose p.dm-empty-line) {
+    min-height: 1rem;
+    margin: 0.95rem 0 !important;
+}
+
+:deep(.prose .dm-soft-break) {
+    display: block;
+    height: 0.75rem;
+    line-height: 0;
 }
 </style>
